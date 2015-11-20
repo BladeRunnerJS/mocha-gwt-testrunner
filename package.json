@@ -1,0 +1,39 @@
+{
+  "name": "mocha-gwt-testrunner",
+  "version": "0.0.1",
+  "description": "Allow string based 'given, when, then' style tests in Mocha",
+  "main": "dist/runner.js",
+  "scripts": {
+    "prepublish": "npm run build:es5 && npm run build:module",
+    "build:es5": "mkdirp dist && babel src -d dist",
+    "build:module": "mkdirp dist && browserify src/runner.js -s MochaGWT -t babelify -o dist/runner.js",
+    "pretest": "npm run lint",
+    "lint": "eslint src test",
+    "test": "npm run test:node && npm run test:browser",
+    "test:node": "mocha --compilers js:babel/register test",
+    "test:node:debug": "mocha --compilers js:babel/register test -w",
+    "test:browser": "karma start",
+    "test:browser:debug": "karma start karma-debug.conf.js"
+  },
+  "author": "Andy Berry <andyberry88@gmail.com> (http://andy-berry.co.uk)",
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "^5.6.14",
+    "babelify": "^6.1.2",
+    "browserify": "^10.2.4",
+    "chai": "^3.4.0",
+    "eslint": "^0.23.0",
+    "karma": "^0.12.37",
+    "karma-browserify": "^4.2.1",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-cli": "0.0.4",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-mocha": "^0.2.0",
+    "mkdirp": "^0.5.1"
+  },
+  "dependencies": {
+    "get-global": "0.0.1",
+    "mocha": "^2.3.0",
+    "sprintf": "^0.1.5"
+  }
+}
