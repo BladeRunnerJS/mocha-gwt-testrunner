@@ -34,6 +34,7 @@
   "dependencies": {
     "get-global": "0.0.1",
     "mocha": "^2.3.0",
-    "sprintf": "^0.1.5"
+    "sprintf": "^0.1.5",
+    "topiarist": "^0.1.4"
   }
 }
