@@ -148,5 +148,24 @@ describe('GWT Test Runner', () => {
         oTestRunner.endTest();
 	});
 
+	it('can chain methods together using \'and\'', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+        // this.stubMockFixture(oTestRunner, 'fixture');
+
+        oTestRunner.doGiven('fixture.prop = \'value\'');
+        oTestRunner.doAnd('fixture.prop = \'value\'');
+        oTestRunner.doAnd('fixture.prop = \'value\'');
+
+        oTestRunner.doWhen('fixture.prop => \'value\'');
+        oTestRunner.doAnd('fixture.prop => \'value\'');
+        oTestRunner.doAnd('fixture.prop => \'value\'');
+
+        oTestRunner.doThen('fixture.prop = \'value\'');
+        oTestRunner.doAnd('fixture.prop = \'value\'');
+        oTestRunner.doAnd('fixture.prop = \'value\'');
+
+        oTestRunner.endTest();
+	});
 
 });
