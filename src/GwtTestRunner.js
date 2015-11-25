@@ -1,6 +1,6 @@
 
 import {locateClass, stringifyInterface} from './Utils';
-import FixtureFactoryInterface from './FixtureFactoryInterface';
+import FixtureFactoryInterface from './FixtureFactory';
 
 import sprintf from 'sprintf';
 import topiarist from 'topiarist';
@@ -24,7 +24,8 @@ export const ERROR_MESSAGES = {
 	UNTERMINATED_TEST: 'Tests must finish with one or more \'THEN\' statements',
 	INVALID_PHASE_MESSAGE: 'Invalid phase state, current phase: \'%s\', called method phase \'%\'',
 	WHEN_STATEMENTS_MUST_USE_BECOMES: '\'WHEN\' statements should use => as an operator',
-	INVALID_STATEMENT_FORMAT: 'Statements should have the form <fixtureName>.<propertyName> <operator> <propertyValue>'
+	INVALID_STATEMENT_FORMAT: 'Statements should have the form <fixtureName>.<propertyName> <operator> <propertyValue>',
+	FIXTURE_NOT_FOUND: 'The fixture \'%s\' did not exist'
 };
 
 function majorPhase(phase) {
@@ -85,7 +86,7 @@ function parseStatement(sStatement, currentPhase) {
 
 	// this._addFixtureToStatement(oStatement);
 	// if (!oStatement.fixture) {
-	// 	this._throwError("InvalidFixtureNameError", sStatement, "No Fixture has been specified matching '" + oStatement.propertyName + "'");
+	// 	throw new Error( sprintf(ERROR_MESSAGES.FIXTURE_NOT_FOUND, oStatement.propertyName) );
 	// }
 
 	return oStatement;

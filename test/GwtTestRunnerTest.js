@@ -1,3 +1,5 @@
+//TODO: check that fixture values are actually assigned - e.g. allows number values - check the value updates
+
 
 import GwtTestRunner, {ERROR_MESSAGES} from '../src/GwtTestRunner';
 import TestFixtureFactory from './TestFixtureFactory';
@@ -187,6 +189,174 @@ describe('GWT Test Runner', () => {
 		expect(() => {
             oTestRunner.doGiven('fixture.prop = ');
         }).to.throw(ERROR_MESSAGES.INVALID_STATEMENT_FORMAT);
+	});
+
+	xit('will throw an error if a fixture doesnt exist', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		expect(() => {
+            oTestRunner.doGiven('nonExistentFixture.prop = \'value\'');
+        }).to.throw('No fixture or fixture property could be found matching \'nonExistentFixture\'');
+	});
+
+	xit('will throw an error if a fixture\'s property doesnt exist', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		expect(() => {
+            oTestRunner.doGiven('fixture.nonExistentProperty = \'value\'');
+        }).to.throw('No fixture or fixture property could be found matching \'fixture.nonExistentProperty\'');
+	});
+
+	xit('allows equals sign to be contained in fixture name', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		oTestRunner.doGiven('another=fixture.prop = \'value\'');
+	});
+
+	xit('allows string values', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		oTestRunner.doGiven('fixture.prop = \'value\'');
+	});
+
+	xit('allows empty string values', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		oTestRunner.doGiven('fixture.prop = \'\'');
+	});
+
+	xit('allows apostrophes in string values', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		oTestRunner.doGiven('fixture.prop = \'prop\'s value\'');
+	});
+
+	xit('allows numbers as values', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		oTestRunner.doGiven('fixture.prop = 42');
+	});
+
+	xit('allows boolean values', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		oTestRunner.doGiven('fixture.prop = true');
+		oTestRunner.doGiven('fixture.prop = false');
+	});
+
+	xit('allows array values', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		oTestRunner.doGiven('fixture.prop = [\'value\', 42, true]');
+	});
+
+	xit('throws an error if strings are not quoted', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		expect(() => {
+			oTestRunner.doGiven('fixture.prop = foo bar');
+		}).to.throw('Error parsing....');
+	});
+
+	xit('throws an error if fixtures are used as property fixtures', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		expect(() => {
+			oTestRunner.doGiven('fixture = \'value\'');
+		}).to.throw('Error parsing....');
+	});
+
+	xit('does not throw an error assigning values to property fixtures', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		oTestRunner.doGiven('propertyFixture = \'value\'');
+	});
+
+	xit('throws an error if no property on a property fixture is defined', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		expect(() => {
+			oTestRunner.doGiven('propertyFixture. = \'value\'');
+		}).to.throw('Error parsing....');
+	});
+
+	xit('does not throw an error assigning property values to property fixtures', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		oTestRunner.doGiven('propertyFixture.prop = \'value\'');
+	});
+
+	xit('allows symbols in property values', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		oTestRunner.doGiven('propertyFixture.prop = \'value :@~#?!£$%^&* key\'');
+	});
+
+	xit('allows newlines in property values', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		oTestRunner.doGiven('propertyFixture.prop = \'1\n2\'');
+        oTestRunner.doGiven('propertyFixture.prop = \'1\n2\n3\n4\'');
+	});
+
+	xit('allows subfixtures to be accessed via their parent fixture', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		oTestRunner.doGiven('parentFixture.subFixture1.prop = \'value\'');
+		oTestRunner.doGiven('parentFixture.subFixture2.prop = \'value2\'');
+	});
+
+	xit('allows subfixtures to be accessed via their grandparent fixture', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		oTestRunner.doGiven('grandParentFixture.childFixture.subFixture1.prop = \'value\'');
+	});
+
+	xit('allows continuing from other tests', () => {
+		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
+
+		// TODO: install continuable mocha here
+		describe('test-suite #1', function()
+        {
+            it('test #1', function()
+            {
+                oTestRunner.doGiven('fixture.prop = \'value1\'');
+            });
+        });
+
+		oTestRunner.doGiven('test.continuesFrom = \'test #1\'');
+        oTestRunner.doGiven('fixture.prop = \'value2\'');
+        oTestRunner.doThen('fixture.prop = \'value2\'');
+        oTestRunner.endTest();
+	});
+
+	xit('throws an error if a suite is already defined', () => {
+        try {
+            describe('my suite', function() { });
+            describe('my suite', function() { });
+        } catch (ex) {
+            return;
+        }
+		fail('Expected test failure - suite is already defined');
 	});
 
 });
