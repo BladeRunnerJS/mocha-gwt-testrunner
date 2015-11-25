@@ -14,36 +14,86 @@ const WHEN_AND_PHASE = 2.5;
 const THEN_PHASE = 3;
 const THEN_AND_PHASE = 3.5;
 
+const REGEX_NEWLINE_PLACEHOLDER = "<!--space--!>";
+
 export const ERROR_MESSAGES = {
-	GIVEN_BEFORE_WHEN_AND_THEN_MSG: '\'GIVEN\' statements must occur before \'WHEN\' and \'THEN\' statements.',
-	WHEN_AFTER_GIVEN_AND_BEFORE_THEN_MSG: '\'WHEN\' statements must occur after \'GIVEN\' statements, but before \'THEN\' statements.',
-	THEN_AFTER_GIVEN_AND_WHEN_MSG: '\'THEN\' statements must occur after \'GIVEN\' and \'WHEN\' statements.',
-	AND_MUST_OCCUR_AFTER_GIVEN_WHEN_THEN_MSG: '\'AND\' statements can not occur until a \'GIVEN\', \'WHEN\' or \'THEN\' statement has been made.',
-	UNTERMINATED_TEST_MSG: 'Tests must finish with one or more \'THEN\' statements',
-	INVALID_PHASE_MESSAGE: 'Invalid phase state, current phase: \'%s\', called method phase \'%\''
+	GIVEN_BEFORE_WHEN_AND_THEN: '\'GIVEN\' statements must occur before \'WHEN\' and \'THEN\' statements.',
+	WHEN_AFTER_GIVEN_AND_BEFORE_THEN: '\'WHEN\' statements must occur after \'GIVEN\' statements, but before \'THEN\' statements.',
+	THEN_AFTER_GIVEN_AND_WHEN: '\'THEN\' statements must occur after \'GIVEN\' and \'WHEN\' statements.',
+	AND_MUST_OCCUR_AFTER_GIVEN_WHEN_THEN: '\'AND\' statements can not occur until a \'GIVEN\', \'WHEN\' or \'THEN\' statement has been made.',
+	UNTERMINATED_TEST: 'Tests must finish with one or more \'THEN\' statements',
+	INVALID_PHASE_MESSAGE: 'Invalid phase state, current phase: \'%s\', called method phase \'%\'',
+	WHEN_STATEMENTS_MUST_USE_BECOMES: '\'WHEN\' statements should use => as an operator',
+	INVALID_STATEMENT_FORMAT: 'Statements should have the form <fixtureName>.<propertyName> <operator> <propertyValue>'
 };
 
+function majorPhase(phase) {
+	return Math.floor(phase);
+}
+
 function getNextPhase(currentPhase, calledMethodPhase) {
-	let currentMajorPhase = Math.floor(currentPhase);
+	let currentMajorPhase = majorPhase(currentPhase);
 	switch(calledMethodPhase) {
 		case GIVEN_PHASE:
 			if (currentMajorPhase === INIT_PHASE || currentPhase === GIVEN_AND_PHASE) {
 				return (currentPhase === GIVEN_AND_PHASE) ? currentPhase : GIVEN_PHASE;
 			}
-			throw new Error( ERROR_MESSAGES.GIVEN_BEFORE_WHEN_AND_THEN_MSG );
+			throw new Error( ERROR_MESSAGES.GIVEN_BEFORE_WHEN_AND_THEN );
 		case WHEN_PHASE:
 			if (currentMajorPhase === GIVEN_PHASE || currentPhase === WHEN_AND_PHASE) {
 				return (currentPhase === WHEN_AND_PHASE) ? currentPhase : WHEN_PHASE;
 			}
-			throw new Error( ERROR_MESSAGES.WHEN_AFTER_GIVEN_AND_BEFORE_THEN_MSG );
+			throw new Error( ERROR_MESSAGES.WHEN_AFTER_GIVEN_AND_BEFORE_THEN );
 		case THEN_PHASE:
 			if (currentMajorPhase === GIVEN_PHASE || currentMajorPhase === WHEN_PHASE || currentPhase === THEN_AND_PHASE) {
 				return (currentPhase === THEN_AND_PHASE) ? currentPhase : THEN_PHASE;
 			}
-			throw new Error( ERROR_MESSAGES.THEN_AFTER_GIVEN_AND_WHEN_MSG );
+			throw new Error( ERROR_MESSAGES.THEN_AFTER_GIVEN_AND_WHEN );
 	}
-	throw new Error( sprintf( ERROR_MESSAGES.INVALID_PHASE_MSG, currentPhase, calledMethodPhase) );
+	throw new Error( sprintf( ERROR_MESSAGES.INVALID_PHASE, currentPhase, calledMethodPhase) );
 }
+
+function parseStatement(sStatement, currentPhase) {
+	sStatement = sStatement.replace(new RegExp('\n', 'g'), REGEX_NEWLINE_PLACEHOLDER);
+
+	/**
+	 * Parses Statements in the format <fixtureName>.<propertyName> <operator> <propertyValue>
+	 * uses '[\x21-\x7E]' rather than '.' to match any character so that newlines can be included too
+	 */
+	var pStatement = /(.+) (\=\>|\=) (.+)/i.exec(sStatement);
+
+	if (pStatement) {
+		for (var i = 0; i < pStatement.length; i++) {
+			pStatement[i] = (pStatement[i].trim());
+		}
+	}
+
+	if (!pStatement || (pStatement.length !== 4) || !pStatement[1] || !pStatement[2] || !pStatement[3]) {
+		throw new Error(ERROR_MESSAGES.INVALID_STATEMENT_FORMAT);
+	}
+
+	var oStatement = {
+		property: (pStatement[1].trim()),
+		operator: pStatement[2]
+		// propertyValue: this._getTypedPropertyValue(pStatement[3].replace(new RegExp(newlinePlaceholder, "g"), "\n"))
+	};
+
+	let currentMajorPhase = majorPhase(currentPhase);
+	if (currentMajorPhase === WHEN_PHASE && oStatement.operator !== '=>') {
+		throw new Error('\'WHEN\' statements should use => as an operator');
+	}
+
+	// this._addFixtureToStatement(oStatement);
+	// if (!oStatement.fixture) {
+	// 	this._throwError("InvalidFixtureNameError", sStatement, "No Fixture has been specified matching '" + oStatement.propertyName + "'");
+	// }
+
+	return oStatement;
+}
+
+
+
+/*############ PUBLIC API ############*/
 
 export default function GwtTestRunner(FixtureFactoryClass) {
 
@@ -90,20 +140,23 @@ GwtTestRunner.prototype.startTest = function() {
 
 GwtTestRunner.prototype.endTest = function() {
 	if (!this.m_bTestFailed && (this.currentPhase === GIVEN_PHASE || this.currentPhase === WHEN_PHASE)) {
-		throw new Error( ERROR_MESSAGES.UNTERMINATED_TEST_MSG );
+		throw new Error( ERROR_MESSAGES.UNTERMINATED_TEST );
 	}
 };
 
 GwtTestRunner.prototype.doGiven = function(sStatement) {
 	this.currentPhase = getNextPhase(this.currentPhase, GIVEN_PHASE);
+	let oStatement = parseStatement(sStatement, this.currentPhase);
 };
 
 GwtTestRunner.prototype.doWhen = function(sStatement) {
 	this.currentPhase = getNextPhase(this.currentPhase, WHEN_PHASE);
+	let oStatement = parseStatement(sStatement, this.currentPhase);
 };
 
 GwtTestRunner.prototype.doThen = function(sStatement) {
 	this.currentPhase = getNextPhase(this.currentPhase, THEN_PHASE);
+	let oStatement = parseStatement(sStatement, this.currentPhase);
 };
 
 GwtTestRunner.prototype.doAnd = function(sStatement) {
@@ -124,6 +177,6 @@ GwtTestRunner.prototype.doAnd = function(sStatement) {
 			this.doThen(sStatement);
 			break;
 		default:
-			throw new Error( ERROR_MESSAGES.AND_MUST_OCCUR_AFTER_GIVEN_WHEN_THEN_MSG );
+			throw new Error( ERROR_MESSAGES.AND_MUST_OCCUR_AFTER_GIVEN_WHEN_THEN );
 	}
 };
