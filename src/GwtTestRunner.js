@@ -1,6 +1,7 @@
 
 import {locateClass, stringifyInterface} from './Utils';
-import FixtureFactoryInterface from './FixtureFactory';
+import FixtureFactory from './FixtureFactory';
+import SubFixtureRegistry from './SubFixtureRegistry';
 
 import sprintf from 'sprintf';
 import topiarist from 'topiarist';
@@ -14,7 +15,7 @@ const WHEN_AND_PHASE = 2.5;
 const THEN_PHASE = 3;
 const THEN_AND_PHASE = 3.5;
 
-const REGEX_NEWLINE_PLACEHOLDER = "<!--space--!>";
+const REGEX_NEWLINE_PLACEHOLDER = '<!--space--!>';
 
 export const ERROR_MESSAGES = {
 	GIVEN_BEFORE_WHEN_AND_THEN: '\'GIVEN\' statements must occur before \'WHEN\' and \'THEN\' statements.',
@@ -25,7 +26,7 @@ export const ERROR_MESSAGES = {
 	INVALID_PHASE_MESSAGE: 'Invalid phase state, current phase: \'%s\', called method phase \'%\'',
 	WHEN_STATEMENTS_MUST_USE_BECOMES: '\'WHEN\' statements should use => as an operator',
 	INVALID_STATEMENT_FORMAT: 'Statements should have the form <fixtureName>.<propertyName> <operator> <propertyValue>',
-	FIXTURE_NOT_FOUND: 'The fixture \'%s\' did not exist'
+	FIXTURE_NOT_FOUND: 'The fixture for \'%s\' does not exist'
 };
 
 function majorPhase(phase) {
@@ -54,7 +55,51 @@ function getNextPhase(currentPhase, calledMethodPhase) {
 	throw new Error( sprintf( ERROR_MESSAGES.INVALID_PHASE, currentPhase, calledMethodPhase) );
 }
 
-function parseStatement(sStatement, currentPhase) {
+function addFixtureToStatement(oStatement, fixtures) {
+
+	for(var i = 0, l = fixtures.length; i < l; ++i) {
+		var oNextFixture = fixtures[i];
+
+		if (oStatement.property.match(oNextFixture.scopeMatcher)) {
+			var sFixtureProperty = oStatement.property.substr(oNextFixture.scopeLength);
+			var bCanHandleProperty = (sFixtureProperty.length > 0) ? oNextFixture.fixture.canHandleProperty(sFixtureProperty) :
+				oNextFixture.fixture.canHandleExactMatch();
+
+			if (bCanHandleProperty) {
+				oStatement.fixture = oNextFixture.fixture;
+				oStatement.propertyName = sFixtureProperty;
+				break;
+			}
+		}
+	}
+}
+
+function getTypedPropertyValue(sValue) {
+	var vValue = null;
+
+	if (sValue === 'true') {
+		vValue = true;
+	} else if (sValue === 'false') {
+		vValue = false;
+	} else if (sValue === 'undefined') {
+		vValue = undefined;
+	} else if (sValue.match(/^'[.\s\S]*'$/)) {
+		vValue = sValue.substr(1, sValue.length - 2);
+	} else if (!isNaN(sValue)) {
+		vValue = Number(sValue);
+	} else if (sValue.match(/^\[.*\]$/)) {
+		var pItems = sValue.substr(1, sValue.length - 2).split(/ *, */);
+
+		vValue = [];
+		for(var i = 0, l = pItems.length; i < l; ++i) {
+			vValue[i] = getTypedPropertyValue(pItems[i]);
+		}
+	}
+
+	return vValue;
+}
+
+function parseStatement(sStatement, currentPhase, fixtures) {
 	sStatement = sStatement.replace(new RegExp('\n', 'g'), REGEX_NEWLINE_PLACEHOLDER);
 
 	/**
@@ -75,8 +120,8 @@ function parseStatement(sStatement, currentPhase) {
 
 	var oStatement = {
 		property: (pStatement[1].trim()),
-		operator: pStatement[2]
-		// propertyValue: this._getTypedPropertyValue(pStatement[3].replace(new RegExp(newlinePlaceholder, "g"), "\n"))
+		operator: pStatement[2],
+		propertyValue: getTypedPropertyValue(pStatement[3].replace(new RegExp(REGEX_NEWLINE_PLACEHOLDER, 'g'), '\n'))
 	};
 
 	let currentMajorPhase = majorPhase(currentPhase);
@@ -84,10 +129,10 @@ function parseStatement(sStatement, currentPhase) {
 		throw new Error('\'WHEN\' statements should use => as an operator');
 	}
 
-	// this._addFixtureToStatement(oStatement);
-	// if (!oStatement.fixture) {
-	// 	throw new Error( sprintf(ERROR_MESSAGES.FIXTURE_NOT_FOUND, oStatement.propertyName) );
-	// }
+	addFixtureToStatement(oStatement, fixtures);
+	if (!oStatement.fixture) {
+		throw new Error( sprintf(ERROR_MESSAGES.FIXTURE_NOT_FOUND, oStatement.property) );
+	}
 
 	return oStatement;
 }
@@ -99,6 +144,7 @@ function parseStatement(sStatement, currentPhase) {
 export default function GwtTestRunner(FixtureFactoryClass) {
 
 	this.currentPhase = -1;
+	this.fixtures = [];
 
 	switch (typeof FixtureFactoryClass) {
 		case 'function':
@@ -115,11 +161,18 @@ export default function GwtTestRunner(FixtureFactoryClass) {
 			throw new Error('fixtureFactoryClass must be an object or a constructor function');
 	}
 
-	if (!topiarist.fulfills(this.m_oFixtureFactory, FixtureFactoryInterface)) {
-		throw new Error( sprintf('The provided fixture factory does not implement the interface %s', stringifyInterface(FixtureFactoryInterface)) );
+	if (!topiarist.fulfills(this.m_oFixtureFactory, FixtureFactory)) {
+		throw new Error( sprintf('The provided fixture factory does not implement the Fixture interface', stringifyInterface(FixtureFactory)) );
 	}
 
+	this.m_oFixtureFactory.addFixtures(this);
+
 }
+
+GwtTestRunner.prototype.addFixture = function(sScope, oFixture) {
+	this.fixtures.push({scopeMatcher:new RegExp('^' + sScope + '(\\..+|$)'), scopeLength:sScope.length + 1, fixture:oFixture});
+	oFixture.addSubFixtures(new SubFixtureRegistry(this, sScope));
+};
 
 GwtTestRunner.prototype.startTest = function() {
 	const GLOBAL = getGlobal();
@@ -147,17 +200,17 @@ GwtTestRunner.prototype.endTest = function() {
 
 GwtTestRunner.prototype.doGiven = function(sStatement) {
 	this.currentPhase = getNextPhase(this.currentPhase, GIVEN_PHASE);
-	let oStatement = parseStatement(sStatement, this.currentPhase);
+	let oStatement = parseStatement(sStatement, this.currentPhase, this.fixtures);
 };
 
 GwtTestRunner.prototype.doWhen = function(sStatement) {
 	this.currentPhase = getNextPhase(this.currentPhase, WHEN_PHASE);
-	let oStatement = parseStatement(sStatement, this.currentPhase);
+	let oStatement = parseStatement(sStatement, this.currentPhase, this.fixtures);
 };
 
 GwtTestRunner.prototype.doThen = function(sStatement) {
 	this.currentPhase = getNextPhase(this.currentPhase, THEN_PHASE);
-	let oStatement = parseStatement(sStatement, this.currentPhase);
+	let oStatement = parseStatement(sStatement, this.currentPhase, this.fixtures);
 };
 
 GwtTestRunner.prototype.doAnd = function(sStatement) {

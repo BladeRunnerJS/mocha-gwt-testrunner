@@ -1,4 +1,7 @@
 //TODO: check that fixture values are actually assigned - e.g. allows number values - check the value updates
+// TODO: test setup and teardown on fixture factory are called
+// TODO: 'test' and 'time' fixtures
+// TODO: use continues from library
 
 
 import GwtTestRunner, {ERROR_MESSAGES} from '../src/GwtTestRunner';
@@ -10,9 +13,11 @@ let expect = chai.expect;
 describe('GWT Test Runner', () => {
 
 	let oTestRunner;
+	let oTestFixtureFactory;
 
 	beforeEach(() => {
-		oTestRunner = new GwtTestRunner(TestFixtureFactory);
+		oTestFixtureFactory = new TestFixtureFactory();
+		oTestRunner = new GwtTestRunner(oTestFixtureFactory);
         oTestRunner.startTest();
 	});
 
@@ -36,7 +41,7 @@ describe('GWT Test Runner', () => {
 
         expect(() => {
             new GwtTestRunner(InvalidTestFixtureFactory);
-        }).to.throw('The provided fixture factory does not implement the interface { addFixtures: function addFixtures() {} }');
+        }).to.throw('The provided fixture factory does not implement the Fixture interface');
 	});
 
 	it('does not throw an error when the fixture factory is valid', () => {
