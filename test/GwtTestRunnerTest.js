@@ -9,8 +9,11 @@ let expect = chai.expect;
 
 describe('GWT Test Runner', () => {
 
-	beforeEach(() => {
+	let oTestRunner;
 
+	beforeEach(() => {
+		oTestRunner = new GwtTestRunner(TestFixtureFactory);
+        oTestRunner.startTest();
 	});
 
 	it('throws an error on undefined factory class', () => {
@@ -42,37 +45,25 @@ describe('GWT Test Runner', () => {
 	});
 
 	it('throws an error if \'when\' is used before \'given\'', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		expect(() => {
             oTestRunner.doWhen('fixture.prop => \'value\'');
         }).to.throw(ERROR_MESSAGES.WHEN_AFTER_GIVEN_AND_BEFORE_THEN);
 	});
 
 	it('throws an error if \'then\' is used before \'given\'', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		expect(() => {
             oTestRunner.doThen('fixture.prop = \'value\'');
         }).to.throw(ERROR_MESSAGES.THEN_AFTER_GIVEN_AND_WHEN);
 	});
 
 	it('throws an error if \'and\' is used before \'given\'', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		expect(() => {
             oTestRunner.doAnd('fixture.prop = \'value\'');
         }).to.throw(ERROR_MESSAGES.AND_MUST_OCCUR_AFTER_GIVEN_WHEN_THEN);
 	});
 
 	it('throws an error if only a \'given\' is used', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
-        oTestRunner.doGiven('fixture.prop = \'value\'');
+		oTestRunner.doGiven('fixture.prop = \'value\'');
 
 		expect(() => {
             oTestRunner.endTest();
@@ -80,9 +71,6 @@ describe('GWT Test Runner', () => {
 	});
 
 	it('throws an error if only a \'given\' and \'when\' are used', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('fixture.prop = \'value\'');
 		oTestRunner.doWhen('fixture.prop => \'value\'');
 
@@ -92,10 +80,7 @@ describe('GWT Test Runner', () => {
 	});
 
 	it('throws an error if \'given\' is used after \'when\'', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
-        oTestRunner.doGiven('fixture.prop = \'value\'');
+		oTestRunner.doGiven('fixture.prop = \'value\'');
 		oTestRunner.doWhen('fixture.prop => \'value\'');
 
         expect(() => {
@@ -104,10 +89,7 @@ describe('GWT Test Runner', () => {
 	});
 
 	it('throws an error if \'given\' is used after \'then\'', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
-        oTestRunner.doGiven('fixture.prop = \'value\'');
+		oTestRunner.doGiven('fixture.prop = \'value\'');
         oTestRunner.doThen('fixture.prop = \'value\'');
 
 		expect(() => {
@@ -116,18 +98,12 @@ describe('GWT Test Runner', () => {
 	});
 
 	it('throws an error if \'when\' is used after \'then\'', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		expect(() => {
             oTestRunner.doWhen('fixture.prop => \'value\'');
         }).to.throw(ERROR_MESSAGES.WHEN_AFTER_GIVEN_AND_BEFORE_THEN);
 	});
 
 	it('does not throw an error if \'given\' \'when\' and \'then\' are used in the correct order', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-		oTestRunner.startTest();
-
 		oTestRunner.doGiven('fixture.prop = \'value\'');
 		oTestRunner.doWhen('fixture.prop => \'value\'');
 		oTestRunner.doThen('fixture.prop = \'value\'');
@@ -135,19 +111,13 @@ describe('GWT Test Runner', () => {
 	});
 
 	it('does not throw an error if \'given\' and \'then\' are used in the correct order', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
-        oTestRunner.doGiven('fixture.prop = \'value\'');
+		oTestRunner.doGiven('fixture.prop = \'value\'');
         oTestRunner.doThen('fixture.prop = \'value\'');
         oTestRunner.endTest();
 	});
 
 	it('can chain methods together using \'and\'', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
-        oTestRunner.doGiven('fixture.prop = \'value\'');
+		oTestRunner.doGiven('fixture.prop = \'value\'');
         oTestRunner.doAnd('fixture.prop = \'value\'');
         oTestRunner.doAnd('fixture.prop = \'value\'');
 
@@ -163,9 +133,6 @@ describe('GWT Test Runner', () => {
 	});
 
 	it('will throw an error if \'whens\' use equals and not becomes', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('fixture.prop = \'value\'');
 
 		expect(() => {
@@ -174,166 +141,103 @@ describe('GWT Test Runner', () => {
 	});
 
 	it('will throw an error if statements dont have a property', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		expect(() => {
             oTestRunner.doGiven(' = \'value\'');
         }).to.throw(ERROR_MESSAGES.INVALID_STATEMENT_FORMAT);
 	});
 
 	it('will throw an error if statements dont have a value', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		expect(() => {
             oTestRunner.doGiven('fixture.prop = ');
         }).to.throw(ERROR_MESSAGES.INVALID_STATEMENT_FORMAT);
 	});
 
 	xit('will throw an error if a fixture doesnt exist', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		expect(() => {
             oTestRunner.doGiven('nonExistentFixture.prop = \'value\'');
         }).to.throw('No fixture or fixture property could be found matching \'nonExistentFixture\'');
 	});
 
 	xit('will throw an error if a fixture\'s property doesnt exist', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		expect(() => {
             oTestRunner.doGiven('fixture.nonExistentProperty = \'value\'');
         }).to.throw('No fixture or fixture property could be found matching \'fixture.nonExistentProperty\'');
 	});
 
 	xit('allows equals sign to be contained in fixture name', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('another=fixture.prop = \'value\'');
 	});
 
 	xit('allows string values', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('fixture.prop = \'value\'');
 	});
 
 	xit('allows empty string values', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('fixture.prop = \'\'');
 	});
 
 	xit('allows apostrophes in string values', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('fixture.prop = \'prop\'s value\'');
 	});
 
 	xit('allows numbers as values', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('fixture.prop = 42');
 	});
 
 	xit('allows boolean values', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('fixture.prop = true');
 		oTestRunner.doGiven('fixture.prop = false');
 	});
 
 	xit('allows array values', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('fixture.prop = [\'value\', 42, true]');
 	});
 
 	xit('throws an error if strings are not quoted', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		expect(() => {
 			oTestRunner.doGiven('fixture.prop = foo bar');
 		}).to.throw('Error parsing....');
 	});
 
 	xit('throws an error if fixtures are used as property fixtures', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		expect(() => {
 			oTestRunner.doGiven('fixture = \'value\'');
 		}).to.throw('Error parsing....');
 	});
 
 	xit('does not throw an error assigning values to property fixtures', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('propertyFixture = \'value\'');
 	});
 
 	xit('throws an error if no property on a property fixture is defined', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		expect(() => {
 			oTestRunner.doGiven('propertyFixture. = \'value\'');
 		}).to.throw('Error parsing....');
 	});
 
 	xit('does not throw an error assigning property values to property fixtures', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('propertyFixture.prop = \'value\'');
 	});
 
 	xit('allows symbols in property values', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('propertyFixture.prop = \'value :@~#?!£$%^&* key\'');
 	});
 
 	xit('allows newlines in property values', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('propertyFixture.prop = \'1\n2\'');
         oTestRunner.doGiven('propertyFixture.prop = \'1\n2\n3\n4\'');
 	});
 
 	xit('allows subfixtures to be accessed via their parent fixture', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('parentFixture.subFixture1.prop = \'value\'');
 		oTestRunner.doGiven('parentFixture.subFixture2.prop = \'value2\'');
 	});
 
 	xit('allows subfixtures to be accessed via their grandparent fixture', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		oTestRunner.doGiven('grandParentFixture.childFixture.subFixture1.prop = \'value\'');
 	});
 
 	xit('allows continuing from other tests', () => {
-		var oTestRunner = new GwtTestRunner(TestFixtureFactory);
-        oTestRunner.startTest();
-
 		// TODO: install continuable mocha here
 		describe('test-suite #1', function()
         {
