@@ -1,8 +1,10 @@
 
 import sinon from 'sinon';
-import Fixture from '../src/Fixture';
+import Fixture from '../../src/Fixture';
+import ParentTestFixture from './ParentTestFixture';
+import GrandParentTestFixture from './GrandParentTestFixture';
 
-function createMockTestFixture(canHandleExactMatch) {
+export function createMockTestFixture(canHandleExactMatch) {
 	let fixture = sinon.stub(new Fixture());
 	fixture.canHandleProperty.returns(false);
 	fixture.canHandleProperty.withArgs('prop').returns(true);
@@ -14,7 +16,9 @@ export default function TestFixtureFactory() {
 	this.fixtures = new Map([
 		['fixture', createMockTestFixture(false)],
 		['propertyFixture', createMockTestFixture(true)],
-		['another=fixture', createMockTestFixture(false)]
+		['another=fixture', createMockTestFixture(false)],
+		['parentFixture', new ParentTestFixture()],
+		['grandParentFixture', new GrandParentTestFixture()]
 	]);
 }
 

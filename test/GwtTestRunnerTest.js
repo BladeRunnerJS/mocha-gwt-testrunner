@@ -5,7 +5,7 @@
 
 
 import GwtTestRunner, {ERROR_MESSAGES} from '../src/GwtTestRunner';
-import TestFixtureFactory from './TestFixtureFactory';
+import TestFixtureFactory from './utils/TestFixtureFactory';
 
 import chai from 'chai';
 let expect = chai.expect;
@@ -228,17 +228,17 @@ describe('GWT Test Runner', () => {
 		oTestRunner.doGiven('propertyFixture.prop = \'value :@~#?!£$%^&* key\'');
 	});
 
-	xit('allows newlines in property values', () => {
+	it('allows newlines in property values', () => {
 		oTestRunner.doGiven('propertyFixture.prop = \'1\n2\'');
-        oTestRunner.doGiven('propertyFixture.prop = \'1\n2\n3\n4\'');
+        oTestRunner.doAnd('propertyFixture.prop = \'1\n2\n3\n4\'');
 	});
 
-	xit('allows subfixtures to be accessed via their parent fixture', () => {
+	it('allows subfixtures to be accessed via their parent fixture', () => {
 		oTestRunner.doGiven('parentFixture.subFixture1.prop = \'value\'');
-		oTestRunner.doGiven('parentFixture.subFixture2.prop = \'value2\'');
+		oTestRunner.doAnd('parentFixture.subFixture2.prop = \'value2\'');
 	});
 
-	xit('allows subfixtures to be accessed via their grandparent fixture', () => {
+	it('allows subfixtures to be accessed via their grandparent fixture', () => {
 		oTestRunner.doGiven('grandParentFixture.childFixture.subFixture1.prop = \'value\'');
 	});
 
