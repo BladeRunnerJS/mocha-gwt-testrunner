@@ -75,28 +75,28 @@ function addFixtureToStatement(oStatement, fixtures) {
 }
 
 function getTypedPropertyValue(sValue) {
-	var vValue = null;
 
 	if (sValue === 'true') {
-		vValue = true;
+		return true;
 	} else if (sValue === 'false') {
-		vValue = false;
+		return false;
 	} else if (sValue === 'undefined') {
-		vValue = undefined;
+		return undefined;
 	} else if (sValue.match(/^'[.\s\S]*'$/)) {
-		vValue = sValue.substr(1, sValue.length - 2);
+		return sValue.substr(1, sValue.length - 2);
 	} else if (!isNaN(sValue)) {
-		vValue = Number(sValue);
+		return Number(sValue);
 	} else if (sValue.match(/^\[.*\]$/)) {
 		var pItems = sValue.substr(1, sValue.length - 2).split(/ *, */);
 
-		vValue = [];
+		let vValue = [];
 		for(var i = 0, l = pItems.length; i < l; ++i) {
 			vValue[i] = getTypedPropertyValue(pItems[i]);
 		}
+		return vValue;
 	}
 
-	return vValue;
+	return sValue;
 }
 
 function parseStatement(sStatement, currentPhase, fixtures) {
