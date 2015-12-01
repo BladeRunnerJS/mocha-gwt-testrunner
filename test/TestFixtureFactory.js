@@ -11,12 +11,19 @@ function createMockTestFixture(canHandleExactMatch) {
 }
 
 export default function TestFixtureFactory() {
-	this.fixtureStub = createMockTestFixture(false);
-	this.propertyFixtureStub = createMockTestFixture(true);
+	this.fixtures = new Map([
+		['fixture', createMockTestFixture(false)],
+		['propertyFixture', createMockTestFixture(true)],
+		['another=fixture', createMockTestFixture(false)]
+	]);
+}
+
+TestFixtureFactory.prototype.getFixture = function(id) {
+	return this.fixtures.get(id);
 }
 
 TestFixtureFactory.prototype.addFixtures = function(oFixtureRegistry) {
-	oFixtureRegistry.addFixture('fixture', this.fixtureStub);
-	oFixtureRegistry.addFixture('propertyFixture', this.propertyFixtureStub);
-	oFixtureRegistry.addFixture('another=fixture', this.fixtureStub);
+	this.fixtures.forEach((value, key, map) => {
+		oFixtureRegistry.addFixture(key, value);
+	});
 };
