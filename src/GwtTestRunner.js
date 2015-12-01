@@ -26,7 +26,8 @@ export const ERROR_MESSAGES = {
 	INVALID_PHASE_MESSAGE: 'Invalid phase state, current phase: \'%s\', called method phase \'%\'',
 	WHEN_STATEMENTS_MUST_USE_BECOMES: '\'WHEN\' statements should use => as an operator',
 	INVALID_STATEMENT_FORMAT: 'Statements should have the form <fixtureName>.<propertyName> <operator> <propertyValue>',
-	FIXTURE_NOT_FOUND: 'The fixture for \'%s\' does not exist'
+	FIXTURE_NOT_FOUND: 'The fixture for \'%s\' does not exist',
+	UNABLE_TO_PARSE_PROPERTY: 'Unable to parse the property value \'%s\'. It was not a boolean, string or array.'
 };
 
 function majorPhase(phase) {
@@ -96,7 +97,7 @@ function getTypedPropertyValue(sValue) {
 		return vValue;
 	}
 
-	return sValue;
+	throw new Error( sprintf(ERROR_MESSAGES.UNABLE_TO_PARSE_PROPERTY, sValue) );
 }
 
 function parseStatement(sStatement, currentPhase, fixtures) {

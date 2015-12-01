@@ -198,26 +198,26 @@ describe('GWT Test Runner', () => {
 		oTestRunner.doGiven('fixture.prop = [\'value\', 42, true]');
 	});
 
-	xit('throws an error if strings are not quoted', () => {
+	it('throws an error if strings are not quoted', () => {
 		expect(() => {
 			oTestRunner.doGiven('fixture.prop = foo bar');
-		}).to.throw('Error parsing....');
+		}).to.throw('Unable to parse the property value \'foo bar\'. It was not a boolean, string or array.');
 	});
 
-	xit('throws an error if fixtures are used as property fixtures', () => {
+	it('throws an error if fixtures are used as property fixtures', () => {
 		expect(() => {
 			oTestRunner.doGiven('fixture = \'value\'');
-		}).to.throw('Error parsing....');
+		}).to.throw('The fixture for \'fixture\' does not exist');
 	});
 
 	it('does not throw an error assigning values to property fixtures', () => {
 		oTestRunner.doGiven('propertyFixture = \'value\'');
 	});
 
-	xit('throws an error if no property on a property fixture is defined', () => {
+	it('throws an error if no property on a property fixture is defined', () => {
 		expect(() => {
 			oTestRunner.doGiven('propertyFixture. = \'value\'');
-		}).to.throw('Error parsing....');
+		}).to.throw('The fixture for \'propertyFixture.\' does not exist');
 	});
 
 	it('does not throw an error assigning property values to property fixtures', () => {
