@@ -157,44 +157,44 @@ describe('GWT Test Runner', () => {
         }).to.throw(ERROR_MESSAGES.INVALID_STATEMENT_FORMAT);
 	});
 
-	xit('will throw an error if a fixture doesnt exist', () => {
+	it('will throw an error if a fixture doesnt exist', () => {
 		expect(() => {
             oTestRunner.doGiven('nonExistentFixture.prop = \'value\'');
-        }).to.throw('No fixture or fixture property could be found matching \'nonExistentFixture\'');
+        }).to.throw('The fixture for \'nonExistentFixture.prop\' does not exist');
 	});
 
-	xit('will throw an error if a fixture\'s property doesnt exist', () => {
+	it('will throw an error if a fixture\'s property doesnt exist', () => {
 		expect(() => {
             oTestRunner.doGiven('fixture.nonExistentProperty = \'value\'');
-        }).to.throw('No fixture or fixture property could be found matching \'fixture.nonExistentProperty\'');
+        }).to.throw('The fixture for \'fixture.nonExistentProperty\' does not exist');
 	});
 
-	xit('allows equals sign to be contained in fixture name', () => {
+	it('allows equals sign to be contained in fixture name', () => {
 		oTestRunner.doGiven('another=fixture.prop = \'value\'');
 	});
 
-	xit('allows string values', () => {
+	it('allows string values', () => {
 		oTestRunner.doGiven('fixture.prop = \'value\'');
 	});
 
-	xit('allows empty string values', () => {
+	it('allows empty string values', () => {
 		oTestRunner.doGiven('fixture.prop = \'\'');
 	});
 
-	xit('allows apostrophes in string values', () => {
+	it('allows apostrophes in string values', () => {
 		oTestRunner.doGiven('fixture.prop = \'prop\'s value\'');
 	});
 
-	xit('allows numbers as values', () => {
+	it('allows numbers as values', () => {
 		oTestRunner.doGiven('fixture.prop = 42');
 	});
 
-	xit('allows boolean values', () => {
+	it('allows boolean values', () => {
 		oTestRunner.doGiven('fixture.prop = true');
-		oTestRunner.doGiven('fixture.prop = false');
+		oTestRunner.doAnd('fixture.prop = false');
 	});
 
-	xit('allows array values', () => {
+	it('allows array values', () => {
 		oTestRunner.doGiven('fixture.prop = [\'value\', 42, true]');
 	});
 
@@ -210,7 +210,7 @@ describe('GWT Test Runner', () => {
 		}).to.throw('Error parsing....');
 	});
 
-	xit('does not throw an error assigning values to property fixtures', () => {
+	it('does not throw an error assigning values to property fixtures', () => {
 		oTestRunner.doGiven('propertyFixture = \'value\'');
 	});
 
@@ -220,11 +220,11 @@ describe('GWT Test Runner', () => {
 		}).to.throw('Error parsing....');
 	});
 
-	xit('does not throw an error assigning property values to property fixtures', () => {
+	it('does not throw an error assigning property values to property fixtures', () => {
 		oTestRunner.doGiven('propertyFixture.prop = \'value\'');
 	});
 
-	xit('allows symbols in property values', () => {
+	it('allows symbols in property values', () => {
 		oTestRunner.doGiven('propertyFixture.prop = \'value :@~#?!£$%^&* key\'');
 	});
 
