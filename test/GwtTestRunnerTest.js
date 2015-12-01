@@ -8,17 +8,36 @@ import GwtTestRunner, {ERROR_MESSAGES} from '../src/GwtTestRunner';
 import TestFixtureFactory from './utils/TestFixtureFactory';
 
 import chai from 'chai';
-let expect = chai.expect;
+const expect = chai.expect;
+const fail = chai.assert.fail;
 
 describe('GWT Test Runner', () => {
 
 	let oTestRunner;
 	let oTestFixtureFactory;
+	let replacedDescribeFn;
+	let replacedBeforeEachFn;
+	let replacedAfterEachFn;
 
 	beforeEach(() => {
 		oTestFixtureFactory = new TestFixtureFactory();
 		oTestRunner = new GwtTestRunner(oTestFixtureFactory);
         oTestRunner.startTest();
+	});
+
+	afterEach(() => {
+		if (typeof replacedDescribeFn !== 'undefined') {
+			global.describe = replacedDescribeFn;
+			replacedDescribeFn = null;
+		}
+		if (typeof replacedBeforeEachFn !== 'undefined') {
+			global.beforeEach = replacedBeforeEachFn;
+			replacedBeforeEachFn = null;
+		}
+		if (typeof replacedAfterEachFn !== 'undefined') {
+			global.afterEach = replacedAfterEachFn;
+			replacedAfterEachFn = null;
+		}
 	});
 
 	it('throws an error on undefined factory class', () => {
@@ -258,14 +277,23 @@ describe('GWT Test Runner', () => {
         oTestRunner.endTest();
 	});
 
-	xit('throws an error if a suite is already defined', () => {
-        try {
+	it('throws an error if a suite is already defined', () => {
+		replacedDescribeFn = global.describe;
+		replacedBeforeEachFn = global.beforeEach;
+		replacedAfterEachFn = global.afterEach;
+		global.describe = function() {
+			return {
+				fullTitle: function() {
+					return 'my suite'
+				}
+			}
+		};
+		global.beforeEach = global.afterEach = function() { };
+		expect(() => {
+			GwtTestRunner.initialize(TestFixtureFactory);
+			describe('my suite', function() { });
             describe('my suite', function() { });
-            describe('my suite', function() { });
-        } catch (ex) {
-            return;
-        }
-		fail('Expected test failure - suite is already defined');
+		}).to.throw('The suite \'my suite\' has already been defined');
 	});
 
 });

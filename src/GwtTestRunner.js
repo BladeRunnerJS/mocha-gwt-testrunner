@@ -2,6 +2,7 @@
 import {locateClass, stringifyInterface} from './Utils';
 import FixtureFactory from './FixtureFactory';
 import SubFixtureRegistry from './SubFixtureRegistry';
+import DuplicateTestChecker from './DuplicateTestChecker';
 
 import sprintf from 'sprintf';
 import topiarist from 'topiarist';
@@ -138,7 +139,11 @@ function parseStatement(sStatement, currentPhase, fixtures) {
 	return oStatement;
 }
 
-
+function createTestMethod(oTestRunner, sMethod) {
+	return function(sStatement) {
+		oTestRunner[sMethod](sStatement);
+	};
+};
 
 /*############ PUBLIC API ############*/
 
@@ -167,8 +172,16 @@ export default function GwtTestRunner(FixtureFactoryClass) {
 	}
 
 	this.m_oFixtureFactory.addFixtures(this);
-
 }
+
+GwtTestRunner.initialize = function(FixtureFactoryClass) {
+	var oTestRunner = new GwtTestRunner(FixtureFactoryClass);
+
+	beforeEach(createTestMethod(oTestRunner, "startTest"));
+	afterEach(createTestMethod(oTestRunner, "endTest"));
+
+	DuplicateTestChecker.install();
+};
 
 GwtTestRunner.prototype.addFixture = function(sScope, oFixture) {
 	this.fixtures.push({scopeMatcher:new RegExp('^' + sScope + '(\\..+|$)'), scopeLength:sScope.length + 1, fixture:oFixture});
@@ -177,12 +190,6 @@ GwtTestRunner.prototype.addFixture = function(sScope, oFixture) {
 
 GwtTestRunner.prototype.startTest = function() {
 	const GLOBAL = getGlobal();
-
-	let createTestMethod = function(oTestRunner, sMethod) {
-		return function(sStatement) {
-			oTestRunner[sMethod](sStatement);
-		};
-	};
 
 	this.currentPhase = INIT_PHASE;
 
