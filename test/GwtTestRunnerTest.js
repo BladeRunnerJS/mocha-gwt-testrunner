@@ -2,6 +2,7 @@
 // TODO: test setup and teardown on fixture factory are called
 // TODO: 'test' and 'time' fixtures
 // TODO: use continues from library
+// tests for fixture and fixture factory beforeEach
 
 
 import GwtTestRunner, {ERROR_MESSAGES} from '../src/GwtTestRunner';
@@ -261,22 +262,6 @@ describe('GWT Test Runner', () => {
 		oTestRunner.doGiven('grandParentFixture.childFixture.subFixture1.prop = \'value\'');
 	});
 
-	xit('allows continuing from other tests', () => {
-		// TODO: install continuable mocha here
-		describe('test-suite #1', function()
-        {
-            it('test #1', function()
-            {
-                oTestRunner.doGiven('fixture.prop = \'value1\'');
-            });
-        });
-
-		oTestRunner.doGiven('test.continuesFrom = \'test #1\'');
-        oTestRunner.doGiven('fixture.prop = \'value2\'');
-        oTestRunner.doThen('fixture.prop = \'value2\'');
-        oTestRunner.endTest();
-	});
-
 	it('throws an error if a suite is already defined', () => {
 		replacedDescribeFn = global.describe;
 		replacedBeforeEachFn = global.beforeEach;
@@ -285,7 +270,9 @@ describe('GWT Test Runner', () => {
 			return {
 				fullTitle: function() {
 					return 'my suite'
-				}
+				},
+				beforeEach: function() { },
+				afterEach: function() { }
 			}
 		};
 		global.beforeEach = global.afterEach = function() { };

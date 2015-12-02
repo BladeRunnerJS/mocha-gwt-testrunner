@@ -3,10 +3,10 @@ import {locateClass, stringifyInterface} from './Utils';
 import FixtureFactory from './FixtureFactory';
 import SubFixtureRegistry from './SubFixtureRegistry';
 import DuplicateTestChecker from './DuplicateTestChecker';
+import TestFixture from './TestFixture';
 
 import sprintf from 'sprintf';
 import topiarist from 'topiarist';
-import getGlobal from 'get-global';
 
 const INIT_PHASE = 0;
 const GIVEN_PHASE = 1;
@@ -139,9 +139,9 @@ function parseStatement(sStatement, currentPhase, fixtures) {
 	return oStatement;
 }
 
-function createTestMethod(oTestRunner, sMethod) {
+function createTestMethod(method) {
 	return function(sStatement) {
-		oTestRunner[sMethod](sStatement);
+		return method(sStatement);
 	};
 };
 
@@ -172,13 +172,33 @@ export default function GwtTestRunner(FixtureFactoryClass) {
 	}
 
 	this.m_oFixtureFactory.addFixtures(this);
+
+	this.addFixture('test', new TestFixture());
+
+	if (this.m_oFixtureFactory.initialize) {
+		try {
+			this.m_oFixtureFactory.initialize();
+		} catch (e) {
+			throw new Error("Error occured in GwtTestRunner.prototype.startTest() calling this.m_oFixtureFactory.initialize()");
+		}
+	}
+
+	for(var i = 0, l = this.fixtures.length; i < l; ++i) {
+		var oFixture = this.fixtures[i].fixture;
+		try {
+			oFixture.initialize();
+		}
+		catch (e) {
+			throw new Error("Error occured in GwtTestRunner.prototype.startTest() calling oFixture.initialize()");
+		}
+	}
 }
 
 GwtTestRunner.initialize = function(FixtureFactoryClass) {
 	var oTestRunner = new GwtTestRunner(FixtureFactoryClass);
 
-	beforeEach(createTestMethod(oTestRunner, "startTest"));
-	afterEach(createTestMethod(oTestRunner, "endTest"));
+	beforeEach(oTestRunner.startTest.bind(oTestRunner));
+	afterEach(oTestRunner.endTest.bind(oTestRunner));
 
 	DuplicateTestChecker.install();
 };
@@ -189,15 +209,30 @@ GwtTestRunner.prototype.addFixture = function(sScope, oFixture) {
 };
 
 GwtTestRunner.prototype.startTest = function() {
-	const GLOBAL = getGlobal();
-
 	this.currentPhase = INIT_PHASE;
 
-	GLOBAL.given = createTestMethod(this, 'doGiven');
-	GLOBAL.when = createTestMethod(this, 'doWhen');
-	GLOBAL.then = createTestMethod(this, 'doThen');
-	GLOBAL.and = createTestMethod(this, 'doAnd');
+	global.given = createTestMethod(this.doGiven.bind(this));
+	global.when = createTestMethod(this.doWhen.bind(this));
+	global.then = createTestMethod(this.doThen.bind(this));
+	global.and = createTestMethod(this.doAnd.bind(this));
 
+	if (this.m_oFixtureFactory.setUp) {
+		try {
+			this.m_oFixtureFactory.setUp();
+		} catch (e) {
+			throw new Error("Error occured in GwtTestRunner.prototype.startTest() calling this.m_oFixtureFactory.setUp()");
+		}
+	}
+
+	for(var i = 0, l = this.fixtures.length; i < l; ++i) {
+		var oFixture = this.fixtures[i].fixture;
+		try {
+			oFixture.setUp();
+		}
+		catch (e) {
+			throw new Error("Error occured in GwtTestRunner.prototype.startTest() calling oFixture.setUp()");
+		}
+	}
 };
 
 GwtTestRunner.prototype.endTest = function() {
@@ -209,16 +244,19 @@ GwtTestRunner.prototype.endTest = function() {
 GwtTestRunner.prototype.doGiven = function(sStatement) {
 	this.currentPhase = getNextPhase(this.currentPhase, GIVEN_PHASE);
 	let oStatement = parseStatement(sStatement, this.currentPhase, this.fixtures);
+	oStatement.fixture.doGiven(oStatement.propertyName, oStatement.propertyValue);
 };
 
 GwtTestRunner.prototype.doWhen = function(sStatement) {
 	this.currentPhase = getNextPhase(this.currentPhase, WHEN_PHASE);
 	let oStatement = parseStatement(sStatement, this.currentPhase, this.fixtures);
+	oStatement.fixture.doWhen(oStatement.propertyName, oStatement.propertyValue);
 };
 
 GwtTestRunner.prototype.doThen = function(sStatement) {
 	this.currentPhase = getNextPhase(this.currentPhase, THEN_PHASE);
 	let oStatement = parseStatement(sStatement, this.currentPhase, this.fixtures);
+	oStatement.fixture.doThen(oStatement.propertyName, oStatement.propertyValue);
 };
 
 GwtTestRunner.prototype.doAnd = function(sStatement) {

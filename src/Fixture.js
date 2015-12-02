@@ -34,6 +34,10 @@ Fixture.prototype.tearDown = function() {
 	// optional interface method
 };
 
+Fixture.prototype.initialize = function() {
+	// optional interface method
+};
+
 /**
  * This optional interface method can be implemented by a Fixture for a complex system which can be conceptually
  * decomposed into separate sub-systems, enabling the fixture to delegate the handling of some fixture properties to

@@ -5,13 +5,14 @@ let mochaDescribe;
 let mochaIt;
 
 function createProxyDescribeFunction(proxyFunction) {
-	return function() {
-		let suite = proxyFunction();
+	return function(title, func) {
+		let suite = proxyFunction(title, func);
 		let suiteTitle = suite.fullTitle();
 		if (definedSuites.includes(suiteTitle)) {
 			throw new Error('The suite \''+suiteTitle+'\' has already been defined');
 		}
 		definedSuites.push(suiteTitle);
+		return suite;
 	};
 }
 

@@ -33,7 +33,7 @@
     "sinon": "^1.17.2"
   },
   "dependencies": {
-    "get-global": "0.0.1",
+    "continuable-mocha": "git+https://github.com/BladeRunnerJS/continuable-mocha.git#2a7420316b50fdc0200cc3cba274647c12344300",
     "mocha": "^2.3.0",
     "sprintf": "^0.1.5",
     "topiarist": "^0.1.4"
