@@ -33,4 +33,25 @@ describe('Test Fixture', () => {
 		expect(lastTestCalled).to.eq('has a test that can be continued from');
 	});
 
+	it('throws an error for any properties other than continuesFrom', () => {
+		expect(() => {
+			given('test.someProperty = \'1234\'');
+			then('fixture.prop = \'value2\'');
+		}).to.throw('test.someProperty');
+	});
+
+	it('throws an error for any when call', () => {
+		expect(() => {
+			given('fixture.prop = \'value\'');
+			when('test.someProperty => \'value\'');
+		}).to.throw('test.someProperty');
+	});
+
+	it('throws an error for any then call', () => {
+		expect(() => {
+			given('fixture.prop = \'value\'');
+			then('test.someProperty => \'value\'');
+		}).to.throw('test.someProperty');
+	});
+
 });

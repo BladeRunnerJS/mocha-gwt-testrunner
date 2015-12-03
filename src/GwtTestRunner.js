@@ -145,12 +145,23 @@ function createTestMethod(method) {
 	};
 };
 
+function handleError(e) {
+	this.m_bTestFailed = true;
+
+	if (e.getMessage) {
+		fail(e.getMessage());
+	} else {
+		throw(e);
+	}
+}
+
 /*############ PUBLIC API ############*/
 
 export default function GwtTestRunner(FixtureFactoryClass) {
 
 	this.currentPhase = -1;
 	this.fixtures = [];
+	this.m_bTestFailed = false;
 
 	switch (typeof FixtureFactoryClass) {
 		case 'function':
@@ -242,21 +253,33 @@ GwtTestRunner.prototype.endTest = function() {
 };
 
 GwtTestRunner.prototype.doGiven = function(sStatement) {
-	this.currentPhase = getNextPhase(this.currentPhase, GIVEN_PHASE);
-	let oStatement = parseStatement(sStatement, this.currentPhase, this.fixtures);
-	oStatement.fixture.doGiven(oStatement.propertyName, oStatement.propertyValue);
+	try {
+		this.currentPhase = getNextPhase(this.currentPhase, GIVEN_PHASE);
+		let oStatement = parseStatement(sStatement, this.currentPhase, this.fixtures);
+		oStatement.fixture.doGiven(oStatement.propertyName, oStatement.propertyValue);
+	} catch(e) {
+		handleError.call(this, e);
+	}
 };
 
 GwtTestRunner.prototype.doWhen = function(sStatement) {
-	this.currentPhase = getNextPhase(this.currentPhase, WHEN_PHASE);
-	let oStatement = parseStatement(sStatement, this.currentPhase, this.fixtures);
-	oStatement.fixture.doWhen(oStatement.propertyName, oStatement.propertyValue);
+	try {
+		this.currentPhase = getNextPhase(this.currentPhase, WHEN_PHASE);
+		let oStatement = parseStatement(sStatement, this.currentPhase, this.fixtures);
+		oStatement.fixture.doWhen(oStatement.propertyName, oStatement.propertyValue);
+	} catch(e) {
+		handleError.call(this, e);
+	}
 };
 
 GwtTestRunner.prototype.doThen = function(sStatement) {
-	this.currentPhase = getNextPhase(this.currentPhase, THEN_PHASE);
-	let oStatement = parseStatement(sStatement, this.currentPhase, this.fixtures);
-	oStatement.fixture.doThen(oStatement.propertyName, oStatement.propertyValue);
+	try {
+		this.currentPhase = getNextPhase(this.currentPhase, THEN_PHASE);
+		let oStatement = parseStatement(sStatement, this.currentPhase, this.fixtures);
+		oStatement.fixture.doThen(oStatement.propertyName, oStatement.propertyValue);
+	} catch(e) {
+		handleError.call(this, e);
+	}
 };
 
 GwtTestRunner.prototype.doAnd = function(sStatement) {

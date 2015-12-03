@@ -42,5 +42,3 @@ TestFixture.prototype.doWhen = function(propertyName, value) {
 TestFixture.prototype.doThen = function(propertyName, value) {
 	throw new Error('then is not supported by TestFixture');
 };
-
-module.exports = TestFixture;
