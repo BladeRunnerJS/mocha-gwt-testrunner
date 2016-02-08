@@ -7,13 +7,13 @@
     "prepublish": "npm run build:es5 && npm run build:module",
     "build:es5": "mkdirp dist && babel src -d dist",
     "build:module": "mkdirp dist && browserify src/GwtTestRunner.js -s MochaGWT -t babelify -o dist/runner.js",
-    "pretest": "npm run lint",
-    "lint": "eslint src test",
+    "pretest": "npm run pretest:lint",
+    "pretest:lint": "eslint src test",
     "test": "npm run test:node && npm run test:browser",
     "test:node": "mocha --compilers js:babel/register test",
-    "test:node:debug": "mocha --compilers js:babel/register test -w",
+    "test:watch": "npm run test:node -- --watch",
     "test:browser": "karma start",
-    "test:browser:debug": "karma start karma-debug.conf.js"
+    "test:debug": "karma start karma-debug.conf.js"
   },
   "author": "Andy Berry <andyberry88@gmail.com> (http://andy-berry.co.uk)",
   "license": "ISC",
