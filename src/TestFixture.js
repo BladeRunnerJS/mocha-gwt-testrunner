@@ -5,7 +5,7 @@ import ContinueFrom from 'continuable-mocha';
 
 
 export default function TestFixture(gwtTestRunner) {
-	this.m_oGwtTestRunner = gwtTestRunner;
+	this.gwtTestRunner = gwtTestRunner;
 }
 topiarist.inherit(TestFixture, Fixture);
 

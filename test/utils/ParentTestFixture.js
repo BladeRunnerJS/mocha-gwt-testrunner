@@ -3,14 +3,14 @@ import topiarist from 'topiarist';
 import {createMockTestFixture} from './TestFixtureFactory';
 
 export default function ParentTestFixture() {
-	this.m_oFirstMockFixture = createMockTestFixture(false);
-	this.m_oSecondMockFixture = createMockTestFixture(false);
+	this.firstMockFixture = createMockTestFixture(false);
+	this.secondMockFixture = createMockTestFixture(false);
 }
 topiarist.inherit(ParentTestFixture, Fixture);
 
 ParentTestFixture.prototype.addSubFixtures = function(oFixtureRegistry) {
-	oFixtureRegistry.addFixture('subFixture1', this.m_oFirstMockFixture);
-	oFixtureRegistry.addFixture('subFixture2', this.m_oSecondMockFixture);
+	oFixtureRegistry.addFixture('subFixture1', this.firstMockFixture);
+	oFixtureRegistry.addFixture('subFixture2', this.secondMockFixture);
 };
 
 ParentTestFixture.prototype.canHandleExactMatch = function() {
@@ -22,9 +22,9 @@ ParentTestFixture.prototype.canHandleProperty = function(/*sProperty*/) {
 };
 
 ParentTestFixture.prototype.getFirstMockFixture = function() {
-	return this.m_oFirstMockFixture;
+	return this.firstMockFixture;
 };
 
 ParentTestFixture.prototype.getSecondMockFixture = function() {
-	return this.m_oSecondMockFixture;
+	return this.secondMockFixture;
 };

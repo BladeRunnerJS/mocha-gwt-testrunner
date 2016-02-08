@@ -146,7 +146,7 @@ function createTestMethod(method) {
 }
 
 function handleError(e) {
-	this.m_bTestFailed = true;
+	this.testFailed = true;
 
 	if (e.getMessage) {
 		fail(e.getMessage());
@@ -161,36 +161,36 @@ export default function GwtTestRunner(FixtureFactoryClass) {
 
 	this.currentPhase = -1;
 	this.fixtures = [];
-	this.m_bTestFailed = false;
+	this.testFailed = false;
 
 	switch (typeof FixtureFactoryClass) {
 		case 'function':
 			try {
-				this.m_oFixtureFactory = new FixtureFactoryClass();
+				this.fixtureFactory = new FixtureFactoryClass();
 			} catch (e) {
 				throw new Error( sprintf('An error occured when creating the fixture factory (%s): %s', FixtureFactoryClass.name, e.message) );
 			}
 			break;
 		case 'object':
-			this.m_oFixtureFactory = FixtureFactoryClass;
+			this.fixtureFactory = FixtureFactoryClass;
 			break;
 		default:
 			throw new Error('fixtureFactoryClass must be an object or a constructor function');
 	}
 
-	if (!topiarist.fulfills(this.m_oFixtureFactory, FixtureFactory)) {
+	if (!topiarist.fulfills(this.fixtureFactory, FixtureFactory)) {
 		throw new Error( sprintf('The provided fixture factory does not implement the Fixture interface', stringifyInterface(FixtureFactory)) );
 	}
 
-	this.m_oFixtureFactory.addFixtures(this);
+	this.fixtureFactory.addFixtures(this);
 
 	this.addFixture('test', new TestFixture());
 
-	if (this.m_oFixtureFactory.initialize) {
+	if (this.fixtureFactory.initialize) {
 		try {
-			this.m_oFixtureFactory.initialize();
+			this.fixtureFactory.initialize();
 		} catch (e) {
-			throw new Error('Error occured in GwtTestRunner.prototype.startTest() calling this.m_oFixtureFactory.initialize()');
+			throw new Error('Error occured in GwtTestRunner.prototype.startTest() calling this.fixtureFactory.initialize()');
 		}
 	}
 
@@ -227,11 +227,11 @@ GwtTestRunner.prototype.startTest = function() {
 	global.then = createTestMethod(this.doThen.bind(this));
 	global.and = createTestMethod(this.doAnd.bind(this));
 
-	if (this.m_oFixtureFactory.setUp) {
+	if (this.fixtureFactory.setUp) {
 		try {
-			this.m_oFixtureFactory.setUp();
+			this.fixtureFactory.setUp();
 		} catch (e) {
-			throw new Error('Error occured in GwtTestRunner.prototype.startTest() calling this.m_oFixtureFactory.setUp()');
+			throw new Error('Error occured in GwtTestRunner.prototype.startTest() calling this.fixtureFactory.setUp()');
 		}
 	}
 
@@ -247,7 +247,7 @@ GwtTestRunner.prototype.startTest = function() {
 };
 
 GwtTestRunner.prototype.endTest = function() {
-	if (!this.m_bTestFailed && (this.currentPhase === GIVEN_PHASE || this.currentPhase === WHEN_PHASE)) {
+	if (!this.testFailed && (this.currentPhase === GIVEN_PHASE || this.currentPhase === WHEN_PHASE)) {
 		throw new Error( ERROR_MESSAGES.UNTERMINATED_TEST );
 	}
 };

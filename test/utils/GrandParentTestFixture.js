@@ -3,12 +3,12 @@ import Fixture from '../../src/Fixture';
 import ParentTestFixture from './ParentTestFixture';
 
 export default function GrandParentTestFixture() {
-	this.m_oChildMockFixture = new ParentTestFixture();
+	this.childMockFixture = new ParentTestFixture();
 }
 topiarist.inherit(GrandParentTestFixture, Fixture);
 
 GrandParentTestFixture.prototype.addSubFixtures = function(oFixtureRegistry) {
-	oFixtureRegistry.addFixture('childFixture', this.m_oChildMockFixture);
+	oFixtureRegistry.addFixture('childFixture', this.childMockFixture);
 };
 
 GrandParentTestFixture.prototype.canHandleExactMatch = function() {
@@ -20,5 +20,5 @@ GrandParentTestFixture.prototype.canHandleProperty = function(/*sProperty*/) {
 };
 
 GrandParentTestFixture.prototype.getChildMockFixture = function() {
-	return this.m_oChildMockFixture;
+	return this.childMockFixture;
 };
