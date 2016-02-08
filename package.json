@@ -6,7 +6,7 @@
   "scripts": {
     "prepublish": "npm run build:es5 && npm run build:module",
     "build:es5": "mkdirp dist && babel src -d dist",
-    "build:module": "mkdirp dist && browserify src/runner.js -s MochaGWT -t babelify -o dist/runner.js",
+    "build:module": "mkdirp dist && browserify src/GwtTestRunner.js -s MochaGWT -t babelify -o dist/runner.js",
     "pretest": "npm run lint",
     "lint": "eslint src test",
     "test": "npm run test:node && npm run test:browser",
