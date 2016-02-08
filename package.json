@@ -1,6 +1,6 @@
 {
   "name": "mocha-gwt-testrunner",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Allow string based 'given, when, then' style tests in Mocha",
   "main": "dist/runner.js",
   "scripts": {
