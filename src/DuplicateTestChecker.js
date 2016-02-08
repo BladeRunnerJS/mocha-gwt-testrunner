@@ -1,4 +1,4 @@
-const definedSuites = [];
+const definedSuites = {};
 
 let mochaDescribe;
 let mochaIt;
@@ -7,10 +7,10 @@ function createProxyDescribeFunction(proxyFunction) {
 	return function(title, func) {
 		let suite = proxyFunction(title, func);
 		let suiteTitle = suite.fullTitle();
-		if (definedSuites.includes(suiteTitle)) {
+		if (definedSuites[suiteTitle]) {
 			throw new Error('The suite \'' + suiteTitle + '\' has already been defined');
 		}
-		definedSuites.push(suiteTitle);
+		definedSuites[suiteTitle] = true;
 		return suite;
 	};
 }
