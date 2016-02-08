@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @module br/test/Fixture
  */
@@ -45,7 +43,7 @@ Fixture.prototype.initialize = function() {
  *
  * @param {module:br/test/FixtureRegistry} fixtureRegistry The registry to which the fixtures should be registered.
  */
-Fixture.prototype.addSubFixtures = function(fixtureRegistry) {
+Fixture.prototype.addSubFixtures = function(/*fixtureRegistry*/) {
 	// optional interface method
 };
 
@@ -60,7 +58,7 @@ Fixture.prototype.canHandleExactMatch = function() {
  * @param {String} propertyName the property name to check.
  * @returns {Boolean} true if the fixture handles the property; false otherwise.
  */
-Fixture.prototype.canHandleProperty = function(propertyName) {
+Fixture.prototype.canHandleProperty = function(/*propertyName*/) {
 	throw new Error('Fixture.canHandleProperty() has not been implemented.');
 };
 
@@ -70,7 +68,7 @@ Fixture.prototype.canHandleProperty = function(propertyName) {
  * @param {String} propertyName The property to be changed.
  * @param {String} value The new value of the property.
  */
-Fixture.prototype.doGiven = function(propertyName, value) {
+Fixture.prototype.doGiven = function(/*propertyName, value*/) {
 	throw new Error('Fixture.doGiven() has not been implemented.');
 };
 
@@ -80,7 +78,7 @@ Fixture.prototype.doGiven = function(propertyName, value) {
  * @param {String} propertyName The property to be changed.
  * @param {String} value The new value of the property.
  */
-Fixture.prototype.doWhen = function(propertyName, value) {
+Fixture.prototype.doWhen = function(/*propertyName, value*/) {
 	throw new Error('Fixture.doWhen() has not been implemented.');
 };
 
@@ -90,7 +88,7 @@ Fixture.prototype.doWhen = function(propertyName, value) {
  * @param {String} propertyName The property name to assert.
  * @param {String} value The value to assert.
  */
-Fixture.prototype.doThen = function(propertyName, value) {
+Fixture.prototype.doThen = function(/*propertyName, value*/) {
 	throw new Error('Fixture.doThen() has not been implemented.');
 };
 

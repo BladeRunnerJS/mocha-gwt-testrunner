@@ -1,5 +1,3 @@
-'use strict';
-
 import topiarist from 'topiarist';
 import FixtureRegistry from './FixtureRegistry';
 
@@ -12,7 +10,7 @@ import FixtureRegistry from './FixtureRegistry';
 function SubFixtureRegistry(parentFixtureRegistry, scope) {
 	this.m_oParentFixtureRegistry = parentFixtureRegistry;
 	this.m_sScope = scope;
-};
+}
 
 topiarist.inherit(SubFixtureRegistry, FixtureRegistry);
 

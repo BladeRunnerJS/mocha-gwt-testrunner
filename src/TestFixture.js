@@ -1,5 +1,3 @@
-'use strict';
-
 import Fixture from './Fixture';
 import topiarist from 'topiarist';
 import ContinueFrom from 'continuable-mocha';
@@ -13,7 +11,7 @@ topiarist.inherit(TestFixture, Fixture);
 
 TestFixture.prototype.initialize = function() {
 	ContinueFrom.install();
-}
+};
 
 TestFixture.prototype.canHandleExactMatch = function() {
 	return false;
@@ -23,7 +21,7 @@ TestFixture.prototype.canHandleProperty = function(property) {
 	return property === 'continuesFrom';
 };
 
-TestFixture.prototype.addSubFixtures = function(fixtureRegistry) {
+TestFixture.prototype.addSubFixtures = function(/*fixtureRegistry*/) {
 	// fixtureRegistry.addFixture('page', new ViewFixture('body'));
 };
 
@@ -32,13 +30,13 @@ TestFixture.prototype.doGiven = function(propertyName, value) {
 		global.continueFrom(value);
 		return;
 	}
-	throw new Error(propertyName+' is not property name supported by TestFixture');
+	throw new Error(propertyName + ' is not property name supported by TestFixture');
 };
 
-TestFixture.prototype.doWhen = function(propertyName, value) {
+TestFixture.prototype.doWhen = function(/*propertyName, value*/) {
 	throw new Error('when is not supported by TestFixture');
 };
 
-TestFixture.prototype.doThen = function(propertyName, value) {
+TestFixture.prototype.doThen = function(/*propertyName, value*/) {
 	throw new Error('then is not supported by TestFixture');
 };

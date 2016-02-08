@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @module br/test/FixtureRegistry
  */
@@ -21,7 +19,7 @@ function FixtureRegistry() {
  * @param {String} scope The scope to which the fixture should be registered.
  * @param {module:br/test/Fixture} fixture The fixture to register.
  */
-FixtureRegistry.prototype.addFixture = function(scope, fixture) {
+FixtureRegistry.prototype.addFixture = function(/*scope, fixture*/) {
 };
 
 export default FixtureRegistry;

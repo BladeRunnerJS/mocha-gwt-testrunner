@@ -1,5 +1,5 @@
-
-import {locateClass, stringifyInterface} from './Utils';
+/*global fail*/
+import {stringifyInterface} from './Utils';
 import FixtureFactory from './FixtureFactory';
 import SubFixtureRegistry from './SubFixtureRegistry';
 import DuplicateTestChecker from './DuplicateTestChecker';
@@ -102,7 +102,7 @@ function getTypedPropertyValue(sValue) {
 }
 
 function parseStatement(sStatement, currentPhase, fixtures) {
-	sStatement = sStatement.replace(new RegExp('\n', 'g'), REGEX_NEWLINE_PLACEHOLDER);
+	sStatement = sStatement.replace(new RegExp('\n', 'g'), REGEX_NEWLINE_PLACEHOLDER); // eslint-disable-line no-control-regex
 
 	/**
 	 * Parses Statements in the format <fixtureName>.<propertyName> <operator> <propertyValue>
@@ -143,7 +143,7 @@ function createTestMethod(method) {
 	return function(sStatement) {
 		return method(sStatement);
 	};
-};
+}
 
 function handleError(e) {
 	this.m_bTestFailed = true;
@@ -151,7 +151,7 @@ function handleError(e) {
 	if (e.getMessage) {
 		fail(e.getMessage());
 	} else {
-		throw(e);
+		throw e;
 	}
 }
 
@@ -190,7 +190,7 @@ export default function GwtTestRunner(FixtureFactoryClass) {
 		try {
 			this.m_oFixtureFactory.initialize();
 		} catch (e) {
-			throw new Error("Error occured in GwtTestRunner.prototype.startTest() calling this.m_oFixtureFactory.initialize()");
+			throw new Error('Error occured in GwtTestRunner.prototype.startTest() calling this.m_oFixtureFactory.initialize()');
 		}
 	}
 
@@ -200,7 +200,7 @@ export default function GwtTestRunner(FixtureFactoryClass) {
 			oFixture.initialize();
 		}
 		catch (e) {
-			throw new Error("Error occured in GwtTestRunner.prototype.startTest() calling oFixture.initialize()");
+			throw new Error('Error occured in GwtTestRunner.prototype.startTest() calling oFixture.initialize()');
 		}
 	}
 }
@@ -215,7 +215,7 @@ GwtTestRunner.initialize = function(FixtureFactoryClass) {
 };
 
 GwtTestRunner.prototype.addFixture = function(sScope, oFixture) {
-	this.fixtures.push({scopeMatcher:new RegExp('^' + sScope + '(\\..+|$)'), scopeLength:sScope.length + 1, fixture:oFixture});
+	this.fixtures.push({scopeMatcher: new RegExp('^' + sScope + '(\\..+|$)'), scopeLength: sScope.length + 1, fixture: oFixture});
 	oFixture.addSubFixtures(new SubFixtureRegistry(this, sScope));
 };
 
@@ -231,7 +231,7 @@ GwtTestRunner.prototype.startTest = function() {
 		try {
 			this.m_oFixtureFactory.setUp();
 		} catch (e) {
-			throw new Error("Error occured in GwtTestRunner.prototype.startTest() calling this.m_oFixtureFactory.setUp()");
+			throw new Error('Error occured in GwtTestRunner.prototype.startTest() calling this.m_oFixtureFactory.setUp()');
 		}
 	}
 
@@ -241,7 +241,7 @@ GwtTestRunner.prototype.startTest = function() {
 			oFixture.setUp();
 		}
 		catch (e) {
-			throw new Error("Error occured in GwtTestRunner.prototype.startTest() calling oFixture.setUp()");
+			throw new Error('Error occured in GwtTestRunner.prototype.startTest() calling oFixture.setUp()');
 		}
 	}
 };

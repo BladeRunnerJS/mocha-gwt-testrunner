@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @module br/test/FixtureFactory
  */
@@ -24,7 +22,7 @@ function FixtureFactory() {
  *
  * @param {module:br/test/FixtureRegistry} fixtureRegistry The registry to which the fixtures should be registered.
  */
-FixtureFactory.prototype.addFixtures = function(fixtureRegistry) {
+FixtureFactory.prototype.addFixtures = function(/*fixtureRegistry*/) {
 	throw new Error('FixtureFactory.addFixtures() has not been implemented.');
 };
 

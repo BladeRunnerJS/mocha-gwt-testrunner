@@ -10,7 +10,6 @@ import TestFixtureFactory from './utils/TestFixtureFactory';
 
 import chai from 'chai';
 const expect = chai.expect;
-const fail = chai.assert.fail;
 
 describe('GWT Test Runner', () => {
 
@@ -269,11 +268,11 @@ describe('GWT Test Runner', () => {
 		global.describe = function() {
 			return {
 				fullTitle: function() {
-					return 'my suite'
+					return 'my suite';
 				},
 				beforeEach: function() { },
 				afterEach: function() { }
-			}
+			};
 		};
 		global.beforeEach = global.afterEach = function() { };
 		expect(() => {

@@ -1,9 +1,11 @@
 {
-  "env": {
-    "mocha": true
-  },
   "rules": {
     "no-unused-expressions": 0,
     "no-new": 0
+  },
+  "globals": {
+    "given": true,
+    "when": true,
+    "then": true
   }
 }

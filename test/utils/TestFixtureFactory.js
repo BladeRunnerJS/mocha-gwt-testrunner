@@ -24,10 +24,10 @@ export default function TestFixtureFactory() {
 
 TestFixtureFactory.prototype.getFixture = function(id) {
 	return this.fixtures.get(id);
-}
+};
 
 TestFixtureFactory.prototype.addFixtures = function(oFixtureRegistry) {
-	this.fixtures.forEach((value, key, map) => {
+	this.fixtures.forEach((value, key/*, map*/) => {
 		oFixtureRegistry.addFixture(key, value);
 	});
 };
