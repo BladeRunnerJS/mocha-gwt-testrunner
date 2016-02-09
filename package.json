@@ -2,7 +2,7 @@
   "name": "mocha-gwt-testrunner",
   "version": "0.0.0",
   "description": "Allow string based 'given, when, then' style tests in Mocha",
-  "main": "dist/runner.js",
+  "main": "dist/GwtTestRunner.js",
   "scripts": {
     "prepublish": "npm run build:es5 && npm run build:module",
     "build:es5": "mkdirp dist && babel src -d dist",
