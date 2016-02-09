@@ -67,6 +67,17 @@ describe('GWT Test Runner', () => {
 		new GwtTestRunner(ValidFixtureFactory);
 	});
 
+	it('does not throw if fixtures do not have an initialize() method', () => {
+		const ValidFixtureFactory = {
+			addFixtures: function(testRunner) {
+				testRunner.addFixture('name', {
+					addSubFixtures: () => null
+				});
+			}
+		};
+		new GwtTestRunner(ValidFixtureFactory);
+	});
+
 	it('throws an error if \'when\' is used before \'given\'', () => {
 		expect(() => {
       oTestRunner.doWhen('fixture.prop => \'value\'');

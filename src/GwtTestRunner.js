@@ -197,7 +197,9 @@ export default function GwtTestRunner(FixtureFactoryClass) {
 	for(var i = 0, l = this.fixtures.length; i < l; ++i) {
 		var oFixture = this.fixtures[i].fixture;
 		try {
-			oFixture.initialize();
+			if(oFixture.initialize) {
+				oFixture.initialize();
+			}
 		}
 		catch (e) {
 			throw new Error('Error occured in GwtTestRunner.prototype.startTest() calling oFixture.initialize()');
