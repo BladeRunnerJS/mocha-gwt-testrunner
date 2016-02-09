@@ -12,7 +12,6 @@ import chai from 'chai';
 const expect = chai.expect;
 
 describe('GWT Test Runner', () => {
-
 	let oTestRunner;
 	let oTestFixtureFactory;
 	let replacedDescribeFn;
@@ -22,7 +21,7 @@ describe('GWT Test Runner', () => {
 	beforeEach(() => {
 		oTestFixtureFactory = new TestFixtureFactory();
 		oTestRunner = new GwtTestRunner(oTestFixtureFactory);
-        oTestRunner.startTest();
+    oTestRunner.startTest();
 	});
 
 	afterEach(() => {
@@ -41,26 +40,26 @@ describe('GWT Test Runner', () => {
 	});
 
 	it('throws an error on undefined factory class', () => {
-        expect(() => {
-            new GwtTestRunner();
-        }).to.throw('fixtureFactoryClass must be an object or a constructor function');
-    });
+    expect(() => {
+      new GwtTestRunner();
+    }).to.throw('fixtureFactoryClass must be an object or a constructor function');
+  });
 
 	it('throws an error if factory constructor throws an error', () => {
 		let ErrorThrowingTestFixtureFactory = function(){
 			throw new Error('ERROR!');
 		};
-        expect(() => {
-            new GwtTestRunner(ErrorThrowingTestFixtureFactory);
-        }).to.throw('An error occured when creating the fixture factory (ErrorThrowingTestFixtureFactory): ERROR!');
-    });
+    expect(() => {
+      new GwtTestRunner(ErrorThrowingTestFixtureFactory);
+    }).to.throw('An error occured when creating the fixture factory (ErrorThrowingTestFixtureFactory): ERROR!');
+  });
 
 	it('throws an error if fixture factory class is wrong type', () => {
 		let InvalidTestFixtureFactory = function(){};
 
-        expect(() => {
-            new GwtTestRunner(InvalidTestFixtureFactory);
-        }).to.throw('The provided fixture factory does not implement the Fixture interface');
+    expect(() => {
+      new GwtTestRunner(InvalidTestFixtureFactory);
+    }).to.throw('The provided fixture factory does not implement the Fixture interface');
 	});
 
 	it('does not throw an error when the fixture factory is valid', () => {
@@ -70,28 +69,28 @@ describe('GWT Test Runner', () => {
 
 	it('throws an error if \'when\' is used before \'given\'', () => {
 		expect(() => {
-            oTestRunner.doWhen('fixture.prop => \'value\'');
-        }).to.throw(ERROR_MESSAGES.WHEN_AFTER_GIVEN_AND_BEFORE_THEN);
+      oTestRunner.doWhen('fixture.prop => \'value\'');
+    }).to.throw(ERROR_MESSAGES.WHEN_AFTER_GIVEN_AND_BEFORE_THEN);
 	});
 
 	it('throws an error if \'then\' is used before \'given\'', () => {
 		expect(() => {
-            oTestRunner.doThen('fixture.prop = \'value\'');
-        }).to.throw(ERROR_MESSAGES.THEN_AFTER_GIVEN_AND_WHEN);
+      oTestRunner.doThen('fixture.prop = \'value\'');
+    }).to.throw(ERROR_MESSAGES.THEN_AFTER_GIVEN_AND_WHEN);
 	});
 
 	it('throws an error if \'and\' is used before \'given\'', () => {
 		expect(() => {
-            oTestRunner.doAnd('fixture.prop = \'value\'');
-        }).to.throw(ERROR_MESSAGES.AND_MUST_OCCUR_AFTER_GIVEN_WHEN_THEN);
+      oTestRunner.doAnd('fixture.prop = \'value\'');
+    }).to.throw(ERROR_MESSAGES.AND_MUST_OCCUR_AFTER_GIVEN_WHEN_THEN);
 	});
 
 	it('throws an error if only a \'given\' is used', () => {
 		oTestRunner.doGiven('fixture.prop = \'value\'');
 
 		expect(() => {
-            oTestRunner.endTest();
-        }).to.throw(ERROR_MESSAGES.UNTERMINATED_TEST);
+      oTestRunner.endTest();
+    }).to.throw(ERROR_MESSAGES.UNTERMINATED_TEST);
 	});
 
 	it('throws an error if only a \'given\' and \'when\' are used', () => {
@@ -99,32 +98,32 @@ describe('GWT Test Runner', () => {
 		oTestRunner.doWhen('fixture.prop => \'value\'');
 
 		expect(() => {
-            oTestRunner.endTest();
-        }).to.throw(ERROR_MESSAGES.UNTERMINATED_TEST);
+      oTestRunner.endTest();
+    }).to.throw(ERROR_MESSAGES.UNTERMINATED_TEST);
 	});
 
 	it('throws an error if \'given\' is used after \'when\'', () => {
 		oTestRunner.doGiven('fixture.prop = \'value\'');
 		oTestRunner.doWhen('fixture.prop => \'value\'');
 
-        expect(() => {
-            oTestRunner.doGiven('fixture.prop = \'value\'');
-        }).to.throw(ERROR_MESSAGES.GIVEN_BEFORE_WHEN_AND_THEN);
+    expect(() => {
+      oTestRunner.doGiven('fixture.prop = \'value\'');
+    }).to.throw(ERROR_MESSAGES.GIVEN_BEFORE_WHEN_AND_THEN);
 	});
 
 	it('throws an error if \'given\' is used after \'then\'', () => {
 		oTestRunner.doGiven('fixture.prop = \'value\'');
-        oTestRunner.doThen('fixture.prop = \'value\'');
+    oTestRunner.doThen('fixture.prop = \'value\'');
 
 		expect(() => {
-            oTestRunner.doGiven('fixture.prop = \'value\'');
-        }).to.throw(ERROR_MESSAGES.GIVEN_BEFORE_WHEN_AND_THEN);
+      oTestRunner.doGiven('fixture.prop = \'value\'');
+    }).to.throw(ERROR_MESSAGES.GIVEN_BEFORE_WHEN_AND_THEN);
 	});
 
 	it('throws an error if \'when\' is used after \'then\'', () => {
 		expect(() => {
-            oTestRunner.doWhen('fixture.prop => \'value\'');
-        }).to.throw(ERROR_MESSAGES.WHEN_AFTER_GIVEN_AND_BEFORE_THEN);
+      oTestRunner.doWhen('fixture.prop => \'value\'');
+    }).to.throw(ERROR_MESSAGES.WHEN_AFTER_GIVEN_AND_BEFORE_THEN);
 	});
 
 	it('does not throw an error if \'given\' \'when\' and \'then\' are used in the correct order', () => {
@@ -136,56 +135,56 @@ describe('GWT Test Runner', () => {
 
 	it('does not throw an error if \'given\' and \'then\' are used in the correct order', () => {
 		oTestRunner.doGiven('fixture.prop = \'value\'');
-        oTestRunner.doThen('fixture.prop = \'value\'');
-        oTestRunner.endTest();
+    oTestRunner.doThen('fixture.prop = \'value\'');
+    oTestRunner.endTest();
 	});
 
 	it('can chain methods together using \'and\'', () => {
 		oTestRunner.doGiven('fixture.prop = \'value\'');
-        oTestRunner.doAnd('fixture.prop = \'value\'');
-        oTestRunner.doAnd('fixture.prop = \'value\'');
+    oTestRunner.doAnd('fixture.prop = \'value\'');
+    oTestRunner.doAnd('fixture.prop = \'value\'');
 
-        oTestRunner.doWhen('fixture.prop => \'value\'');
-        oTestRunner.doAnd('fixture.prop => \'value\'');
-        oTestRunner.doAnd('fixture.prop => \'value\'');
+    oTestRunner.doWhen('fixture.prop => \'value\'');
+    oTestRunner.doAnd('fixture.prop => \'value\'');
+    oTestRunner.doAnd('fixture.prop => \'value\'');
 
-        oTestRunner.doThen('fixture.prop = \'value\'');
-        oTestRunner.doAnd('fixture.prop = \'value\'');
-        oTestRunner.doAnd('fixture.prop = \'value\'');
+    oTestRunner.doThen('fixture.prop = \'value\'');
+    oTestRunner.doAnd('fixture.prop = \'value\'');
+    oTestRunner.doAnd('fixture.prop = \'value\'');
 
-        oTestRunner.endTest();
+    oTestRunner.endTest();
 	});
 
 	it('will throw an error if \'whens\' use equals and not becomes', () => {
 		oTestRunner.doGiven('fixture.prop = \'value\'');
 
 		expect(() => {
-            oTestRunner.doWhen('fixture = \'value\'');
-        }).to.throw(ERROR_MESSAGES.WHEN_STATEMENTS_MUST_USE_BECOMES);
+      oTestRunner.doWhen('fixture = \'value\'');
+    }).to.throw(ERROR_MESSAGES.WHEN_STATEMENTS_MUST_USE_BECOMES);
 	});
 
 	it('will throw an error if statements dont have a property', () => {
 		expect(() => {
-            oTestRunner.doGiven(' = \'value\'');
-        }).to.throw(ERROR_MESSAGES.INVALID_STATEMENT_FORMAT);
+      oTestRunner.doGiven(' = \'value\'');
+    }).to.throw(ERROR_MESSAGES.INVALID_STATEMENT_FORMAT);
 	});
 
 	it('will throw an error if statements dont have a value', () => {
 		expect(() => {
-            oTestRunner.doGiven('fixture.prop = ');
-        }).to.throw(ERROR_MESSAGES.INVALID_STATEMENT_FORMAT);
+      oTestRunner.doGiven('fixture.prop = ');
+    }).to.throw(ERROR_MESSAGES.INVALID_STATEMENT_FORMAT);
 	});
 
 	it('will throw an error if a fixture doesnt exist', () => {
 		expect(() => {
-            oTestRunner.doGiven('nonExistentFixture.prop = \'value\'');
-        }).to.throw('The fixture for \'nonExistentFixture.prop\' does not exist');
+      oTestRunner.doGiven('nonExistentFixture.prop = \'value\'');
+    }).to.throw('The fixture for \'nonExistentFixture.prop\' does not exist');
 	});
 
 	it('will throw an error if a fixture\'s property doesnt exist', () => {
 		expect(() => {
-            oTestRunner.doGiven('fixture.nonExistentProperty = \'value\'');
-        }).to.throw('The fixture for \'fixture.nonExistentProperty\' does not exist');
+      oTestRunner.doGiven('fixture.nonExistentProperty = \'value\'');
+    }).to.throw('The fixture for \'fixture.nonExistentProperty\' does not exist');
 	});
 
 	it('allows equals sign to be contained in fixture name', () => {
@@ -249,7 +248,7 @@ describe('GWT Test Runner', () => {
 
 	it('allows newlines in property values', () => {
 		oTestRunner.doGiven('propertyFixture.prop = \'1\n2\'');
-        oTestRunner.doAnd('propertyFixture.prop = \'1\n2\n3\n4\'');
+    oTestRunner.doAnd('propertyFixture.prop = \'1\n2\n3\n4\'');
 	});
 
 	it('allows subfixtures to be accessed via their parent fixture', () => {
@@ -278,8 +277,7 @@ describe('GWT Test Runner', () => {
 		expect(() => {
 			GwtTestRunner.initialize(TestFixtureFactory);
 			describe('my suite', function() { });
-            describe('my suite', function() { });
+      describe('my suite', function() { });
 		}).to.throw('The suite \'my suite\' has already been defined');
 	});
-
 });
