@@ -1,0 +1,51 @@
+/**
+ * @module br/test/viewhandler/BorderColor
+ */
+
+import jQuery from 'jquery';
+import br from '@brjs/br/modules/Core';
+import Errors from '@brjs/br/modules/Errors';
+import ViewFixtureHandler from './ViewFixtureHandler';
+
+/**
+ * @class
+ * @alias module:br/test/viewhandler/BorderColor
+ * @implements module:br/test/viewhandler/ViewFixtureHandler
+ *
+ * @classdesc
+ * <code>BorderColor</code> instances of <code>ViewFixtureHandler</code> can be used to test the border color of an element.
+ * Example usage:
+ *
+ * <pre>and("form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).bordercolor = '#1111FF'");</pre>
+ */
+function BorderColor() {
+}
+br.implement(BorderColor, ViewFixtureHandler);
+
+BorderColor.prototype.set = function(/*eElement*/) {
+	throw new Errors.InvalidTestError('BorderWidth can\'t be used in a Given or When clause.');
+};
+
+BorderColor.prototype.get = function(eElement) {
+	var sColor = (jQuery(eElement)[0].style.borderColor).toLowerCase();
+
+	var digits = /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/.exec(sColor);
+	var sHexColor;
+
+	if (digits) {
+		var red = parseInt(digits[1]);
+		var green = parseInt(digits[2]);
+		var blue = parseInt(digits[3]);
+
+		var rgb = 1 << 24 | blue | (green << 8) | (red << 16);
+
+		sHexColor = '#' + rgb.toString(16).substr(1);
+	} else if (sColor.match(/^#[0-9a-f]{6}/i)) {
+		sHexColor = sColor;
+	} else {
+		throw new Errors.InvalidTestError('Color format was not expected');
+	}
+	return sHexColor.toUpperCase();
+};
+
+export default BorderColor;

@@ -1,7 +1,7 @@
 import Fixture from './Fixture';
 import topiarist from 'topiarist';
 import ContinueFrom from 'continuable-mocha';
-// var ViewFixture = require('br/test/ViewFixture');
+import ViewFixture from './ViewFixture';
 
 
 export default function TestFixture(gwtTestRunner) {
@@ -21,8 +21,11 @@ TestFixture.prototype.canHandleProperty = function(property) {
 	return property === 'continuesFrom';
 };
 
-TestFixture.prototype.addSubFixtures = function(/*fixtureRegistry*/) {
-	// fixtureRegistry.addFixture('page', new ViewFixture('body'));
+TestFixture.prototype.addSubFixtures = function(fixtureRegistry) {
+	// TODO: enable the view-fixture by removing this guard
+	if(global.noSuchProperty) {
+		fixtureRegistry.addFixture('page', new ViewFixture('body'));
+	}
 };
 
 TestFixture.prototype.doGiven = function(propertyName, value) {

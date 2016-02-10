@@ -36,6 +36,7 @@
   "dependencies": {
     "continuable-mocha": "^0.0.4",
     "get-global": "0.0.1",
+    "jquery": "^2.2.0",
     "sprintf": "^0.1.5",
     "topiarist": "^0.1.4"
   },
