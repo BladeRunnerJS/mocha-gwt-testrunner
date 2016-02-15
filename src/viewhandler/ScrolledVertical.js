@@ -25,7 +25,7 @@ ScrolledVertical.prototype.set = function(eElement, nOffset) {
 };
 
 ScrolledVertical.prototype.get = function(eElement) {
-	throw new Errors.InvalidTestError("ScrolledVertical can't be used in a then clause.");
+	throw new Errors.InvalidTestError('ScrolledVertical can\'t be used in a then clause.');
 };
 
 export default ScrolledVertical;

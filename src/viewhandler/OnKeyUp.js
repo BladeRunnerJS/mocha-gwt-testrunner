@@ -17,11 +17,11 @@ function OnKeyUp() {
 br.implement(OnKeyUp, ViewFixtureHandler);
 
 OnKeyUp.prototype.set = function(eElement, mValues) {
-	Utils.fireKeyEvent(eElement, "keyup", mValues.sKey, mValues);
+	Utils.fireKeyEvent(eElement, 'keyup', mValues.sKey, mValues);
 };
 
 OnKeyUp.prototype.get = function(eElement) {
-	throw new Errors.InvalidTestError("The keyUp event cannot be used in a doGiven or doThen");
+	throw new Errors.InvalidTestError('The keyUp event cannot be used in a doGiven or doThen');
 };
 
 export default OnKeyUp;

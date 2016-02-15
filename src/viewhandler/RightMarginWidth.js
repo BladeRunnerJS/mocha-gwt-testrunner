@@ -16,14 +16,14 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>RightMarginWidth</code> instances of <code>ViewFixtureHandler</code> can be used to test the right margin width of an element.
  * Example usage:
  *
- * <pre>and("form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).rightMarginWidth = '10'");</pre>
+ * <pre>and('form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).rightMarginWidth = '10'');</pre>
  */
 function RightMarginWidth() {
 }
 br.implement(RightMarginWidth, ViewFixtureHandler);
 
 RightMarginWidth.prototype.set = function(eElement) {
-	throw new Errors.InvalidTestError("RightMarginWidth can't be used in a Given or When clause.");
+	throw new Errors.InvalidTestError('RightMarginWidth can\'t be used in a Given or When clause.');
 };
 
 RightMarginWidth.prototype.get = function(eElement) {

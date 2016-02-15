@@ -17,11 +17,11 @@ function OnKeyDown() {
 br.implement(OnKeyDown, ViewFixtureHandler);
 
 OnKeyDown.prototype.set = function(eElement, mValues) {
-	Utils.fireKeyEvent(eElement, "keydown", mValues, null);
+	Utils.fireKeyEvent(eElement, 'keydown', mValues, null);
 };
 
 OnKeyDown.prototype.get = function(eElement) {
-	throw new Errors.InvalidTestError("The keyDown event cannot be used in a doGiven or doThen");
+	throw new Errors.InvalidTestError('The keyDown event cannot be used in a doGiven or doThen');
 };
 
 export default OnKeyDown;

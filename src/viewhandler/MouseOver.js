@@ -16,7 +16,7 @@ import Utils from '../Utils';
  * <code>MouseOver</code> instances of <code>ViewFixtureHandler</code> can be used to trigger <code>mouseover</code> event for a view element.
  * Example usage:
  *
- * <pre>when("test.page.(#aRealButton).mouseOver => true");</pre>
+ * <pre>when('test.page.(#aRealButton).mouseOver => true');</pre>
  */
 function MouseOver() {
 }
@@ -27,7 +27,7 @@ MouseOver.prototype.set = function(eElement, mValues) {
 };
 
 MouseOver.prototype.get = function(eElement) {
-	throw new Errors.InvalidTestError("The mouseOver event cannot be used in a doGiven or doThen");
+	throw new Errors.InvalidTestError('The mouseOver event cannot be used in a doGiven or doThen');
 };
 
 export default MouseOver;

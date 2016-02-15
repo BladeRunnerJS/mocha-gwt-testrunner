@@ -16,14 +16,14 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>TopMarginWidth</code> instances of <code>ViewFixtureHandler</code> can be used to test the top margin width of an element.
  * Example usage:
  *
- * <pre>and("form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).topMarginWidth = '10'");</pre>
+ * <pre>and('form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).topMarginWidth = '10'');</pre>
  */
 function TopMarginWidth() {
 }
 br.implement(TopMarginWidth, ViewFixtureHandler);
 
 TopMarginWidth.prototype.set = function(eElement) {
-	throw new Errors.InvalidTestError("TopMarginWidth can't be used in a Given or When clause.");
+	throw new Errors.InvalidTestError('TopMarginWidth can\'t be used in a Given or When clause.');
 };
 
 TopMarginWidth.prototype.get = function(eElement) {

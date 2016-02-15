@@ -17,20 +17,20 @@ import Utils from '../Utils';
  * <code>TypedValue</code> instances of <code>ViewFixtureHandler</code> can be used to simulate typing a value into an input view element.
  * Example usage:
  *
- * <pre>when("form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).typedValue => 'abc'");</pre>
+ * <pre>when('form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).typedValue => 'abc'');</pre>
  */
 function TypedValue() {
 }
 br.implement(TypedValue, ViewFixtureHandler);
 
 TypedValue.prototype.get = function(eElement) {
-	throw new Errors.InvalidTestError("The 'typedValue' property can't be used in a Then clause, try using 'value'.");
+	throw new Errors.InvalidTestError('The \'typedValue\' property can\'t be used in a Then clause, try using \'value\'.');
 };
 
 TypedValue.prototype.set = function(eElement, sValue) {
 	if (eElement.value === undefined)
 	{
-		throw new Errors.InvalidTestError("The element you tried to use 'typedValue' on doesn't have a value field to simulate typing on.");
+		throw new Errors.InvalidTestError('The element you tried to use \'typedValue\' on doesn\'t have a value field to simulate typing on.');
 	}
 
 	//Check whether the last active element wants us to fire a change event.
@@ -47,10 +47,10 @@ TypedValue.prototype.set = function(eElement, sValue) {
 	{
 		var sKey = sValue.charAt(i);
 
-		Utils.fireKeyEvent(eElement, "keydown", sKey);
+		Utils.fireKeyEvent(eElement, 'keydown', sKey);
 		eElement.value += sKey;
-		Utils.fireKeyEvent(eElement, "keypress", sKey);
-		Utils.fireKeyEvent(eElement, "keyup", sKey);
+		Utils.fireKeyEvent(eElement, 'keypress', sKey);
+		Utils.fireKeyEvent(eElement, 'keyup', sKey);
 	}
 
 	//Request the next active element to fire a change event

@@ -16,7 +16,7 @@ import Utils from '../Utils';
  * <code>MouseMove</code> instances of <code>ViewFixtureHandler</code> can be used to trigger <code>mousemove</code> event for a view element.
  * Example usage:
  *
- * <pre>when("test.page.(#aRealButton).mouseMove => true");</pre>
+ * <pre>when('test.page.(#aRealButton).mouseMove => true');</pre>
  */
 function MouseMove() {
 }
@@ -27,7 +27,7 @@ MouseMove.prototype.set = function(eElement, mValues) {
 };
 
 MouseMove.prototype.get = function(eElement) {
-	throw new Errors.InvalidTestError("The mouseMove event cannot be used in a doGiven or doThen");
+	throw new Errors.InvalidTestError('The mouseMove event cannot be used in a doGiven or doThen');
 };
 
 export default MouseMove;

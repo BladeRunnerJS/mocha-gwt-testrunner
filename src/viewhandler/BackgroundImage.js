@@ -16,7 +16,7 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>BackgroundImage</code> instances of <code>ViewFixtureHandler</code> can be used to test the background image value.
  * Example usage:
  *
- * <pre>and("form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).backgroundImage = 'images/image.png'");</pre>
+ * <pre>and('form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).backgroundImage = 'images/image.png'');</pre>
  */
 function BackgroundImage() {
 }

@@ -22,7 +22,7 @@ function ViewFixtureHandler() {
  * @param {Variant} vValue value to be set on eElement
  */
 ViewFixtureHandler.prototype.set = function(eElement, vValue) {
-	throw new Errors.UnimplementedInterfaceError("This method has not yet been implemented");
+	throw new Errors.UnimplementedInterfaceError('This method has not yet been implemented');
 };
 
 /**
@@ -31,7 +31,7 @@ ViewFixtureHandler.prototype.set = function(eElement, vValue) {
  * @param {Variant} vValue value to be used when inspecting the element
  */
 ViewFixtureHandler.prototype.get = function(eElement, vValue) {
-	throw new Errors.UnimplementedInterfaceError("This method has not yet been implemented");
+	throw new Errors.UnimplementedInterfaceError('This method has not yet been implemented');
 };
 
 export default ViewFixtureHandler;

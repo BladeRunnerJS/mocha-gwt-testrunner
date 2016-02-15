@@ -17,7 +17,7 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * by setting the <code>disabled<code> attribute.
  * Example usage:
  *
- * <pre>and("form.view.(.close).enabled = true");</pre>
+ * <pre>and('form.view.(.close).enabled = true');</pre>
  */
 function Enabled(){
 }
@@ -31,7 +31,7 @@ Enabled.prototype.get = function(eElement) {
 
 	{
 		var eElementToTest = jQuery(pElementsToTest[i]);
-		if (eElementToTest.is(":disabled"))
+		if (eElementToTest.is(':disabled'))
 		{
 			return false;
 		}
@@ -44,15 +44,15 @@ Enabled.prototype.set = function(eElement, vValue) {
 	if (vValue === true) {
 		// Disabled elements make their descendants disabled too, so if someone
 		// tries to enable such a child, FAIL.
-		if (jQuery(eElement).parents(":disabled").length > 0)
+		if (jQuery(eElement).parents(':disabled').length > 0)
 		{
-			throw new Errors.InvalidTestError("Can not enable element with a disabled ancestor.")
+			throw new Errors.InvalidTestError('Can not enable element with a disabled ancestor.')
 		}
 		eElement.disabled = false;
 	} else if (vValue === false) {
 		eElement.disabled = true;
 	} else {
-		throw new Errors.InvalidTestError("enabled can only be set with a boolean value.");
+		throw new Errors.InvalidTestError('enabled can only be set with a boolean value.');
 	}
 };
 

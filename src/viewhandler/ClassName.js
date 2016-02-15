@@ -15,7 +15,7 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>ClassName</code> instances of <code>ViewFixtureHandler</code> can be used to get a class of a view element.
  * Example usage:
  *
- * <pre>then("form.view.('#formContentAreaContainer').className = 'OpenSent'");</pre>
+ * <pre>then('form.view.('#formContentAreaContainer').className = 'OpenSent'');</pre>
  */
 function ClassName() {
 }

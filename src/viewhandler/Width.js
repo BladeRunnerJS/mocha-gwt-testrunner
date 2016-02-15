@@ -16,14 +16,14 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>Width</code> instances of <code>ViewFixtureHandler</code> can be used to get width of a view element.
  * Example usage:
  *
- * <pre>then("dynamicComponent.view.(.component).width = 100");</pre>
+ * <pre>then('dynamicComponent.view.(.component).width = 100');</pre>
  */
 function Width() {
 }
 br.implement(Width, ViewFixtureHandler);
 
 Width.prototype.set = function(/*eElement*/) {
-	throw new Errors.InvalidTestError("The width attribute for a element cannot be set directly and should be set via the viewModel.");
+	throw new Errors.InvalidTestError('The width attribute for a element cannot be set directly and should be set via the viewModel.');
 };
 
 Width.prototype.get = function(eElement) {

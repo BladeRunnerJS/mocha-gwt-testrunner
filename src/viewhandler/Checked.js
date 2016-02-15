@@ -16,7 +16,7 @@ import Utils from '../Utils';
  * <code>Checked</code> instances of <code>ViewFixtureHandler</code> can be used to trigger <code>checked</code> property of a checkbox or a radiobutton.
  * Example usage:
  *
- * <pre>and("example.view.(input:eq(0)).checked = false");</pre>
+ * <pre>and('example.view.(input:eq(0)).checked = false');</pre>
  */
 function Checked() {
 }

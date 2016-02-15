@@ -16,7 +16,7 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>FocusOut</code> instances of <code>ViewFixtureHandler</code> can be used to trigger <code>focusout</code> on a view element.
  * Example usage:
  *
- * <pre>and("form.view.(#theField).focusOut => true");</pre>
+ * <pre>and('form.view.(#theField).focusOut => true');</pre>
  */
 function FocusOut() {
 }
@@ -27,7 +27,7 @@ FocusOut.prototype.set = function(eElement) {
 };
 
 FocusOut.prototype.get = function(eElement) {
-	throw new Errors.InvalidTestError("The focusOut event cannot be used in a doGiven or doThen");
+	throw new Errors.InvalidTestError('The focusOut event cannot be used in a doGiven or doThen');
 };
 
 export default FocusOut;

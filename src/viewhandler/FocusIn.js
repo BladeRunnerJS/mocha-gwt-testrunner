@@ -16,7 +16,7 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>FocusIn</code> instances of <code>ViewFixtureHandler</code> can be used to trigger <code>focusin</code> on a view element.
  * Example usage:
  *
- * <pre>and("form.view.(#theField).focusIn => true");</pre>
+ * <pre>and('form.view.(#theField).focusIn => true');</pre>
  */
 function FocusIn() {
 }
@@ -27,7 +27,7 @@ FocusIn.prototype.set = function(eElement) {
 };
 
 FocusIn.prototype.get = function(eElement) {
-	throw new Errors.InvalidTestError("The focusIn event cannot be used in a doGiven or doThen");
+	throw new Errors.InvalidTestError('The focusIn event cannot be used in a doGiven or doThen');
 };
 
 export default FocusIn;

@@ -17,7 +17,7 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>Value</code> instances of <code>ViewFixtureHandler</code> can be used to set or get <code>value</code> property of a view element.
  * Example usage:
  *
- * <pre>then("form.view.(.orderSummary .orderAmount .native input).value = '50'");</pre>
+ * <pre>then('form.view.(.orderSummary .orderAmount .native input).value = '50'');</pre>
  */
 function Value() {
 }
@@ -25,7 +25,7 @@ br.implement(Value, ViewFixtureHandler);
 
 Value.prototype.get = function(eElement) {
 	if (eElement.value === undefined) {
-		throw new Errors.InvalidTestError("The element you tried to use the 'value' property on doesn't have one.");
+		throw new Errors.InvalidTestError('The element you tried to use the \'value\' property on doesn\'t have one.');
 	}
 	var elementValue = jQuery(eElement).val();
 	return elementValue;
@@ -33,7 +33,7 @@ Value.prototype.get = function(eElement) {
 
 Value.prototype.set = function(eElement, vValue) {
 	if (eElement.value === undefined) {
-		throw new Errors.InvalidTestError("The element you tried to use the 'value' property on doesn't have one.");
+		throw new Errors.InvalidTestError('The element you tried to use the \'value\' property on doesn\'t have one.');
 	}
 
 	try { delete eElement.fireOnChange; } catch (e) { }
@@ -43,7 +43,7 @@ Value.prototype.set = function(eElement, vValue) {
 	 * Knockout doesn't listen for the jQuery change event unless jQuery appears before the knockout library
 	 * and in order to make that happen presenter-knockout has to directly depends on jQuery.
 	*/
-	Utils.fireDomEvent(eElement, "change");
+	Utils.fireDomEvent(eElement, 'change');
 };
 
 export default Value;

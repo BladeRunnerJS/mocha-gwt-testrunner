@@ -15,14 +15,14 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>Focused</code> instances of <code>ViewFixtureHandler</code> can be used to trigger <code>focus</code> and <code>blur</code> on a view element.
  * Example usage:
  *
- * <pre>and("form.view.(#theButton).focused => true");</pre>
+ * <pre>and('form.view.(#theButton).focused => true');</pre>
  */
 function Focused() {
 }
 br.implement(Focused, ViewFixtureHandler);
 
-Focused.focusableElements = {"A" : true, "BODY" : true, "BUTTON" : true, "FRAME" : true, "IFRAME" : true, "IMG" : true, "INPUT" : true, "ISINDEX" : true,
-		"OBJECT" : true, "SELECT" : true, "TEXTAREA" : true};
+Focused.focusableElements = {'A' : true, 'BODY' : true, 'BUTTON' : true, 'FRAME' : true, 'IFRAME' : true, 'IMG' : true, 'INPUT' : true, 'ISINDEX' : true,
+		'OBJECT' : true, 'SELECT' : true, 'TEXTAREA' : true};
 
 Focused.isFocusableElement = function(eElement) {
 	return (eElement.tabIndex > 0) || ((eElement.tabIndex === 0) && this.focusableElements[eElement.tagName]);
@@ -30,7 +30,7 @@ Focused.isFocusableElement = function(eElement) {
 
 Focused.prototype.set = function(eElement, vValue) {
 	if ( !Focused.isFocusableElement(eElement) || eElement.disabled ) {
-		throw new Errors.InvalidTestError("The 'focused' property is not available on non-focusable or disabled elements.");
+		throw new Errors.InvalidTestError('The \'focused\' property is not available on non-focusable or disabled elements.');
 	}
 
 	if (vValue === true) {
@@ -38,13 +38,13 @@ Focused.prototype.set = function(eElement, vValue) {
 	} else if (vValue === false) {
 		eElement.blur();
 	} else {
-		throw new Errors.InvalidTestError("The 'focused' property only takes boolean values.");
+		throw new Errors.InvalidTestError('The \'focused\' property only takes boolean values.');
 	}
 };
 
 Focused.prototype.get = function(eElement) {
 	if (!Focused.isFocusableElement(eElement)) {
-		throw new Errors.InvalidTestError("The 'focused' property is not available on non-focusable elements.");
+		throw new Errors.InvalidTestError('The \'focused\' property is not available on non-focusable elements.');
 	}
 
 	if (eElement === document.activeElement) {

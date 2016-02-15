@@ -14,7 +14,7 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>ReadOnly</code> instances of <code>ViewFixtureHandler</code> can be used to set or get the <code>readonly</code> attribute of an input view element
  * Example usage:
  *
- * <pre>then("form.view.(.totalValue input).readonly = true");</pre>
+ * <pre>then('form.view.(.totalValue input).readonly = true');</pre>
  */
 function Readonly() {
 }

@@ -18,7 +18,7 @@ import Utils from '../Utils';
  * <code>Blurred</code> instances of <code>ViewFixtureHandler</code> can be used to trigger <code>blur</code> or <code>focus</code> events on the view element.
  * Example usage:
  *
- * <pre>and("form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).blurred => true");</pre>
+ * <pre>and('form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).blurred => true');</pre>
  */
 function Blurred() {
 }

@@ -16,14 +16,14 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>LeftMarginWidth</code> instances of <code>ViewFixtureHandler</code> can be used to test the left margin width of an element.
  * Example usage:
  *
- * <pre>and("form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).leftMarginWidth = '10'");</pre>
+ * <pre>and('form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).leftMarginWidth = '10'');</pre>
  */
 function LeftMarginWidth() {
 }
 br.implement(LeftMarginWidth, ViewFixtureHandler);
 
 LeftMarginWidth.prototype.set = function(eElement) {
-	throw new Errors.InvalidTestError("LeftMarginWidth can't be used in a Given or When clause.");
+	throw new Errors.InvalidTestError('LeftMarginWidth can\'t be used in a Given or When clause.');
 };
 
 LeftMarginWidth.prototype.get = function(eElement) {

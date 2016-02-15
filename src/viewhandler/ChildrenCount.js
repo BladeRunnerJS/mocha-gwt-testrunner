@@ -16,7 +16,7 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>ChildrenCount</code> instances of <code>ViewFixtureHandler</code> can be used to get number of child elements for a view element.
  * Example usage:
  *
- * <pre>and("example.view.(select).childrenCount = 5");</pre>
+ * <pre>and('example.view.(select).childrenCount = 5');</pre>
  */
 function ChildrenCount() {
 }

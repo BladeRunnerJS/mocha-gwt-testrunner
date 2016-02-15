@@ -16,14 +16,14 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>Color</code> instances of <code>ViewFixtureHandler</code> can be used to test the bottom margin width of an element.
  * Example usage:
  *
- * <pre>and("form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).color = '#1212DD'");</pre>
+ * <pre>and('form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).color = '#1212DD'');</pre>
  */
 function Color() {
 }
 br.implement(Color, ViewFixtureHandler);
 
 Color.prototype.set = function(eElement) {
-	throw new Errors.InvalidTestError("Color can't be used in a Given or When clause.");
+	throw new Errors.InvalidTestError('Color can\'t be used in a Given or When clause.');
 };
 
 Color.prototype.get = function(eElement) {
@@ -43,7 +43,7 @@ Color.prototype.get = function(eElement) {
 	} else if (sColor.match(/^#[0-9a-f]{6}/i)) {
 		sHexColor = sColor;
 	} else {
-		throw new Errors.InvalidTestError("Color format was not expected");
+		throw new Errors.InvalidTestError('Color format was not expected');
 	}
 	return sHexColor.toUpperCase();
 };

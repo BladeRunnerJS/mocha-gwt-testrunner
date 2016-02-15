@@ -15,14 +15,14 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>HasClass</code> instances of <code>ViewFixtureHandler</code> can be used to verify that a view element
  * has a particular class. Example usage:
  *
- * <pre>then("form.view.(.orderAmount .amountValue input).hasClass = 'has-error'");</pre>
+ * <pre>then('form.view.(.orderAmount .amountValue input).hasClass = 'has-error'');</pre>
  */
 function HasClass() {
 }
 br.implement(HasClass, ViewFixtureHandler);
 
 HasClass.prototype.get = function(eElement, sClassName) {
-	if (eElement.className.match("(^| )" + sClassName + "($| )")) {
+	if (eElement.className.match('(^| )' + sClassName + '($| )')) {
 		return sClassName;
 	} else {
 		return null;
@@ -30,7 +30,7 @@ HasClass.prototype.get = function(eElement, sClassName) {
 };
 
 HasClass.prototype.set = function(eElement, sClassName) {
-	throw new Errors.InvalidTestError("hasClass can't be used in a Given or When clause.");
+	throw new Errors.InvalidTestError('hasClass can\'t be used in a Given or When clause.');
 };
 
 export default HasClass;

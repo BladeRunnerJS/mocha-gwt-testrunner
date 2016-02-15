@@ -16,7 +16,7 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>BorderColor</code> instances of <code>ViewFixtureHandler</code> can be used to test the border color of an element.
  * Example usage:
  *
- * <pre>and("form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).bordercolor = '#1111FF'");</pre>
+ * <pre>and('form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).bordercolor = '#1111FF'');</pre>
  */
 function BorderColor() {
 }

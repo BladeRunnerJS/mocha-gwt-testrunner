@@ -16,7 +16,7 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * <code>BorderWidth</code> instances of <code>ViewFixtureHandler</code> can be used to test the border width of an element.
  * Example usage:
  *
- * <pre>and("form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).borderwidth = '10'");</pre>
+ * <pre>and('form.view.([identifier=\'orderForm\'] .order_amount .order_amount_input input).borderwidth = '10'');</pre>
  */
 function BorderWidth() {
 }

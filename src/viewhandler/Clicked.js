@@ -18,7 +18,7 @@ import Utils from '../Utils';
  * <code>Clicked</code> instances of <code>ViewFixtureHandler</code> can be used to trigger a click on a view element.
  * Example usage:
  *
- * <pre>when("form.view.(.executeOrder [identifier=\'buttonOrder\'] .order_button).clicked => true");</pre>
+ * <pre>when('form.view.(.executeOrder [identifier=\'buttonOrder\'] .order_button).clicked => true');</pre>
  */
 function Clicked() {
 }

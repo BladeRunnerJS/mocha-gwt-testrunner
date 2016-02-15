@@ -17,33 +17,33 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * for a SELECT view element.
  * Example usage:
  *
- * <pre>then("form.model.payment.options = ['credit','debit']");</pre>
+ * <pre>then('form.model.payment.options = ['credit','debit']');</pre>
  */
 function Options() {
 }
 br.implement(Options, ViewFixtureHandler);
 
 Options.prototype.set = function(eElement, pValues) {
-	if (eElement.tagName.toLowerCase() !== "select") {
-		throw new Errors.InvalidTestError("The 'options' property is only available for SELECT elements.");
+	if (eElement.tagName.toLowerCase() !== 'select') {
+		throw new Errors.InvalidTestError('The \'options\' property is only available for SELECT elements.');
 	}
 	if (!(pValues instanceof Array)) {
-		throw new Errors.InvalidTestError("The 'options' property can only take an Array as its value.");
+		throw new Errors.InvalidTestError('The \'options\' property can only take an Array as its value.');
 	}
-	eElement.innerHTML = "";
+	eElement.innerHTML = '';
 	for (var idx = 0, max = pValues.length; idx < max; idx++) {
-		var eNewOption = document.createElement("option");
+		var eNewOption = document.createElement('option');
 		eNewOption.innerHTML = pValues[idx].toString();
 		eElement.appendChild(eNewOption);
 	}
 };
 
 Options.prototype.get = function(eElement) {
-	if (eElement.tagName.toLowerCase() !== "select") {
-		throw new Errors.InvalidTestError("The 'options' property is only available for SELECT elements.");
+	if (eElement.tagName.toLowerCase() !== 'select') {
+		throw new Errors.InvalidTestError('The \'options\' property is only available for SELECT elements.');
 	}
 	var pOptions = [];
-	jQuery(eElement).find("option").each(function(i,eOption){
+	jQuery(eElement).find('option').each(function(i,eOption){
 		pOptions.push(eOption.innerHTML);
 	});
 	return pOptions;

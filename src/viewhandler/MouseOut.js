@@ -16,7 +16,7 @@ import Utils from '../Utils';
  * <code>MouseOut</code> instances of <code>ViewFixtureHandler</code> can be used to trigger <code>mouseout</code> event for a view element.
  * Example usage:
  *
- * <pre>when("test.page.(#aRealButton).mouseOut => true");</pre>
+ * <pre>when('test.page.(#aRealButton).mouseOut => true');</pre>
  */
 function MouseOut() {
 }
@@ -27,7 +27,7 @@ MouseOut.prototype.set = function(eElement, mValues) {
 };
 
 MouseOut.prototype.get = function(eElement) {
-	throw new Errors.InvalidTestError("The mouseOut event cannot be used in a doGiven or doThen");
+	throw new Errors.InvalidTestError('The mouseOut event cannot be used in a doGiven or doThen');
 };
 
 export default MouseOut;

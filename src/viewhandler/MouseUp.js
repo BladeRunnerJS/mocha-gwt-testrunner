@@ -16,7 +16,7 @@ import Utils from '../Utils';
  * <code>MouseUp</code> instances of <code>ViewFixtureHandler</code> can be used to trigger <code>mouseup</code> event for a view element.
  * Example usage:
  *
- * <pre>when("test.page.(#aRealButton).mouseUp => true");</pre>
+ * <pre>when('test.page.(#aRealButton).mouseUp => true');</pre>
  */
 function MouseUp() {
 }
@@ -27,7 +27,7 @@ MouseUp.prototype.set = function(eElement, mValues) {
 };
 
 MouseUp.prototype.get = function(eElement) {
-	throw new Errors.InvalidTestError("The mouseUp event cannot be used in a doGiven or doThen");
+	throw new Errors.InvalidTestError('The mouseUp event cannot be used in a doGiven or doThen');
 };
 
 export default MouseUp;

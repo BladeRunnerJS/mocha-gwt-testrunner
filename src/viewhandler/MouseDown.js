@@ -16,7 +16,7 @@ import Utils from '../Utils';
  * <code>MouseDown</code> instances of <code>ViewFixtureHandler</code> can be used to trigger <code>mousedown</code> event for a view element.
  * Example usage:
  *
- * <pre>when("test.page.(#aRealButton).mouseDown => true");</pre>
+ * <pre>when('test.page.(#aRealButton).mouseDown => true');</pre>
  */
 function MouseDown() {
 }
@@ -27,7 +27,7 @@ MouseDown.prototype.set = function(eElement, mValues) {
 };
 
 MouseDown.prototype.get = function(eElement) {
-	throw new Errors.InvalidTestError("The mouseDown event cannot be used in a doGiven or doThen");
+	throw new Errors.InvalidTestError('The mouseDown event cannot be used in a doGiven or doThen');
 };
 
 export default MouseDown;

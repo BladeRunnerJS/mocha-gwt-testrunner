@@ -18,7 +18,7 @@ import ViewFixtureHandler from './ViewFixtureHandler';
  * property of an OPTION view element.
  * Example usage:
  *
- * <pre>when("demo.view.(#multiSelectBox option:last).selected => true");</pre>
+ * <pre>when('demo.view.(#multiSelectBox option:last).selected => true');</pre>
  */
 function Selected(){
 }
@@ -26,17 +26,17 @@ br.implement(Selected, ViewFixtureHandler);
 
 Selected.prototype.get = function(eElement) {
 	if (eElement.selected === undefined) {
-		throw new Errors.InvalidTestError("Only Option elements have the 'selected' property.");
+		throw new Errors.InvalidTestError('Only Option elements have the \'selected\' property.');
 	}
 	return eElement.selected;
 };
 
 Selected.prototype.set = function(eElement, vValue) {
 	if (eElement.selected === undefined) {
-		throw new Errors.InvalidTestError("Only Option elements have their 'selected' property set.");
+		throw new Errors.InvalidTestError('Only Option elements have their \'selected\' property set.');
 	}
 	if (!(vValue === true || vValue === false)) {
-		throw new Errors.InvalidTestError("the 'selected' property can only be set to true or false.");
+		throw new Errors.InvalidTestError('the \'selected\' property can only be set to true or false.');
 	}
 	if (eElement.selected != vValue) {
 		eElement.selected = vValue;
@@ -46,7 +46,7 @@ Selected.prototype.set = function(eElement, vValue) {
 			(eElement.previousSibling || eElement.nextSibling).selected = true;
 		}
 
-		Utils.fireDomEvent(jQuery(eElement).parent('select'), "change");
+		Utils.fireDomEvent(jQuery(eElement).parent('select'), 'change');
 	}
 };
 
