@@ -43,7 +43,7 @@ Options.prototype.get = function(eElement) {
 		throw new Errors.InvalidTestError('The \'options\' property is only available for SELECT elements.');
 	}
 	var pOptions = [];
-	jQuery(eElement).find('option').each(function(i,eOption){
+	jQuery(eElement).find('option').each(function(i, eOption){
 		pOptions.push(eOption.innerHTML);
 	});
 	return pOptions;

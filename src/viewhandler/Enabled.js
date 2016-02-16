@@ -46,7 +46,7 @@ Enabled.prototype.set = function(eElement, vValue) {
 		// tries to enable such a child, FAIL.
 		if (jQuery(eElement).parents(':disabled').length > 0)
 		{
-			throw new Errors.InvalidTestError('Can not enable element with a disabled ancestor.')
+			throw new Errors.InvalidTestError('Can not enable element with a disabled ancestor.');
 		}
 		eElement.disabled = false;
 	} else if (vValue === false) {

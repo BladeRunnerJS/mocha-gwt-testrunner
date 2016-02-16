@@ -31,7 +31,7 @@ LeftMarginWidth.prototype.get = function(eElement) {
 
 	var	pWidthValues = sMargin.match(/\d+/g);
 
-	return pWidthValues.length == 4 ? pWidthValues[3] : pWidthValues.length == 2 ? pWidthValues[1] : pWidthValues[0] ;
+	return pWidthValues.length === 4 ? pWidthValues[3] : pWidthValues.length === 2 ? pWidthValues[1] : pWidthValues[0];
 };
 
 export default LeftMarginWidth;

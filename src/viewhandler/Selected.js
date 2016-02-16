@@ -38,11 +38,11 @@ Selected.prototype.set = function(eElement, vValue) {
 	if (!(vValue === true || vValue === false)) {
 		throw new Errors.InvalidTestError('the \'selected\' property can only be set to true or false.');
 	}
-	if (eElement.selected != vValue) {
+	if (eElement.selected !== vValue) {
 		eElement.selected = vValue;
 
 		// needed for options within optgroup tags in IE8
-		if(eElement.selected != vValue) {
+		if(eElement.selected !== vValue) {
 			(eElement.previousSibling || eElement.nextSibling).selected = true;
 		}
 

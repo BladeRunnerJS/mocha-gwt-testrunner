@@ -21,7 +21,7 @@ function Readonly() {
 br.implement(Readonly, ViewFixtureHandler);
 
 Readonly.prototype.set = function(eElement, vValue) {
-	eElement.readOnly= (vValue === true);
+	eElement.readOnly = (vValue === true);
 };
 
 Readonly.prototype.get = function(eElement) {

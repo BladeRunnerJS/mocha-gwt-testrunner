@@ -73,7 +73,7 @@ Clicked.prototype.set = function(eElement, mArgs) {
 	if ( ( (elementNodeName === 'input' && elementInputType === 'submit')
 				|| elementNodeName === 'button') ) {
 		var elementParentForm = jqueryElement.parents('form');
-		if (elementParentForm != null && (elementParentForm.attr('action') != null || elementParentForm.attr('onsubmit') != null)) {
+		if (elementParentForm !== null && (elementParentForm.attr('action') !== null || elementParentForm.attr('onsubmit') !== null)) {
 			elementParentForm.trigger('submit');
 		}
 	}

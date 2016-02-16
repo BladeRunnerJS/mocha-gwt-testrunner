@@ -39,7 +39,7 @@ IsVisible.prototype.get = function(eElement) {
 	// be visible, since they still consume space in the layout.
 
 	var sVisibility = jQuery(eElement).css('visibility');
-	return jQuery(eElement).is(':visible') && sVisibility != 'hidden';
+	return jQuery(eElement).is(':visible') && sVisibility !== 'hidden';
 };
 
 export default IsVisible;

@@ -21,8 +21,8 @@ function Focused() {
 }
 br.implement(Focused, ViewFixtureHandler);
 
-Focused.focusableElements = {'A' : true, 'BODY' : true, 'BUTTON' : true, 'FRAME' : true, 'IFRAME' : true, 'IMG' : true, 'INPUT' : true, 'ISINDEX' : true,
-		'OBJECT' : true, 'SELECT' : true, 'TEXTAREA' : true};
+Focused.focusableElements = {'A': true, 'BODY': true, 'BUTTON': true, 'FRAME': true, 'IFRAME': true, 'IMG': true, 'INPUT': true, 'ISINDEX': true,
+		'OBJECT': true, 'SELECT': true, 'TEXTAREA': true};
 
 Focused.isFocusableElement = function(eElement) {
 	return (eElement.tabIndex > 0) || ((eElement.tabIndex === 0) && this.focusableElements[eElement.tagName]);
